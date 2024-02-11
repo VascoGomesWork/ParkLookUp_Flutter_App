@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 void main() {
   runApp(MaterialApp(home: GoogleMapActivity()));
@@ -26,9 +27,27 @@ class GoogleMapState extends State<GoogleMapActivity> {
   final Completer<GoogleMapController> _controller = Completer();
 
   static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
-  static const LatLng destination = LatLng(37.33429383, -122.06600055);
+  static const LatLng destinationHandicapNormal = LatLng(37.33429383, -122.06600055);
+  static const LatLng destinationHandicapFull = LatLng(37.33429384, -122.06600055);
+  static const LatLng destinationEmpty = LatLng(37.33429383, -122.06600056);
 
   List<LatLng> polylineCoordinates = [];
+  
+  BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor destinationHandicapNormalIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor destinationHandicapFullIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor destinationEmptyIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
+
+  void getCurrentLocation(){
+
+    Location location = Location();
+
+    /*location.getLocation().then((location) => {
+      currentLocation = location
+    });*/
+
+  }
 
   void getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints();
@@ -36,7 +55,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       google_api_key, 
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude), 
-      PointLatLng(destination.latitude, destination.longitude),
+      PointLatLng(destinationHandicapNormal.latitude, destinationHandicapNormal.longitude),
       );
 
       if(result.points.isNotEmpty){
@@ -50,10 +69,34 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
   }
 
+  void setCustomMarkerIcon(){
+
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap.png")
+    .then((icon) => {
+        sourceIcon = icon
+      },
+    );
+
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap.png")
+    .then((icon) => {
+        destinationHandicapNormalIcon = icon
+      },
+    );
+
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap.png")
+    .then((icon) => {
+        currentLocationIcon = icon
+      },
+    );
+
+  }
+
   @override
   void initState(){
 
+    getCurrentLocation();
     getPolyPoints();
+    //setCustomMarkerIcon();
     super.initState();
 
   }
@@ -74,18 +117,40 @@ class GoogleMapState extends State<GoogleMapActivity> {
                 Polyline(
                   polylineId: const PolylineId("route"),
                   points: polylineCoordinates,
+                  color: primaryColor,
+                  width: 6
                 )
               },
 
               markers: {
-                const Marker(
-                  markerId: MarkerId("source"),
+                Marker(
+                  icon: currentLocationIcon,
+                  markerId: const MarkerId("source"),
                   position: sourceLocation,
+                  onTap: () {
+                    const Text("Ganda Tap");
+                  },
                 ),
 
-                const Marker(
-                  markerId: MarkerId("destination"),
-                  position: destination,
+                //Destination 1 - Park Normal
+                Marker(
+                  icon: destinationHandicapNormalIcon,
+                  markerId: const MarkerId("destination1"),
+                  position: destinationHandicapNormal,
+                ),
+
+                //Destination - Almost Full Handicap Parking
+                Marker(
+                  icon: destinationHandicapFullIcon,
+                  markerId: const MarkerId("destination2"),
+                  position: destinationHandicapFull,
+                ),
+
+                //Destination 3 - Free Handicap Parking
+                Marker(
+                  icon: destinationEmptyIcon,
+                  markerId: const MarkerId("destination3"),
+                  position: destinationEmpty,
                 )
               },
             ),
