@@ -36,7 +36,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationHandicapNormalIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationHandicapFullIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor destinationEmptyIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor destinationHandicapEmptyIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
 
   void getCurrentLocation(){
@@ -56,6 +56,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
       google_api_key, 
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude), 
       PointLatLng(destinationHandicapNormal.latitude, destinationHandicapNormal.longitude),
+      
       );
 
       if(result.points.isNotEmpty){
@@ -83,9 +84,15 @@ class GoogleMapState extends State<GoogleMapActivity> {
       },
     );
 
-    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap.png")
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap_red.png")
     .then((icon) => {
-        currentLocationIcon = icon
+        destinationHandicapFullIcon = icon
+      },
+    );
+
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap_green.png")
+    .then((icon) => {
+        destinationHandicapEmptyIcon = icon
       },
     );
 
@@ -148,7 +155,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
                 //Destination 3 - Free Handicap Parking
                 Marker(
-                  icon: destinationEmptyIcon,
+                  icon: destinationHandicapEmptyIcon,
                   markerId: const MarkerId("destination3"),
                   position: destinationEmpty,
                 )
