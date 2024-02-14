@@ -24,11 +24,11 @@ bool paidPark = false;
 
 /////////////////////////////////////////////////////////////DROPDOWN STUFF/////////////////////////////////////////////////////////////////
 //ORIGIN
-const List<String> originList = ["Origin 1", "Origin 2", "Origin 3"];
-String originSelectedItem = "Origin 1";
+const List<String> originList = ["Localização Atual", "Lisboa", "Porto", "Coimbra"];
+String originSelectedItem = "Localização Atual";
 //DESTINATION
-const List<String> destinationList = ["Destination 1", "Destination 2", "Destination 3"];
-String destinationSelectedItem = "Destination 1";
+//const List<String> destinationList = ["Destination 1", "Destination 2", "Destination 3"];
+//String destinationSelectedItem = "Destination 1";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class GoogleMapActivity extends StatefulWidget {
   const GoogleMapActivity({Key? key}) : super(key: key);
@@ -41,10 +41,26 @@ class GoogleMapState extends State<GoogleMapActivity> {
   
   final Completer<GoogleMapController> _controller = Completer();
 
-  static LatLng sourceLocation = LatLng(38.765720610090774, -9.205036667402148);
-  static LatLng destinationHandicapNormal = LatLng(38.80202179114487, -9.17810434050634);
-  static const LatLng destinationHandicapFull = LatLng(38.77579639495337, -9.215869841502556);
-  static const LatLng destinationEmpty = LatLng(38.76027069793011, -9.16162484916254);
+  /////////////////////////////////////////SOURCE LOCATION/////////////////////////////////////////////////////////////////////////
+  static LatLng sourceLocation = LatLng(38.569791168839295, -7.906492510540867);
+  static LatLng destinationHandicapNormal = LatLng(38.57373688370198, -7.912808185813289);
+  static const LatLng destinationHandicapFull = LatLng(38.57173204693666, -7.903861526859222);
+  static const LatLng destinationEmpty = LatLng(38.57783548697596, -7.905856004970001);
+/////////////////////////////////////////////LISBOA////////////////////////////////////////////////////////////////////////////////
+  static LatLng lisboaSourceLocation = LatLng(38.765720610090774, -9.205036667402148);
+  static LatLng lisboaDestinationHandicapNormal = LatLng(38.80202179114487, -9.17810434050634);
+  static const LatLng lisboaDestinationHandicapFull = LatLng(38.77579639495337, -9.215869841502556);
+  static const LatLng lisboaDestinationEmpty = LatLng(38.76027069793011, -9.16162484916254);
+//////////////////////////////////////////////PORTO//////////////////////////////////////////////////////////////////////////////////
+  static LatLng portoSourceLocation = LatLng(41.16286622732716, -8.63916461073044);
+  static LatLng portoDestinationHandicapNormal = LatLng(41.15845123589461, -8.645180183854443);
+  static const LatLng portoDestinationHandicapFull = LatLng(41.162923193015004, -8.63780259417406);
+  static const LatLng portoDestinationEmpty = LatLng(41.15808093277244, -8.641018466598842);
+////////////////////////////////////////////COIMBRA//////////////////////////////////////////////////////////////////////////////////
+  static LatLng coimbraSourceLocation = LatLng(40.19754414214365, -8.413450623040502);
+  static LatLng coimbraDestinationHandicapNormal = LatLng(40.199049993598386, -8.408925899843966);
+  static const LatLng coimbraDestinationHandicapFull = LatLng(40.19959307935994, -8.40472437116147);
+  static const LatLng coimbraDestinationEmpty = LatLng(40.19618637855491, -8.40042588412476);
 
   List<LatLng> polylineCoordinates = [];
   
@@ -128,16 +144,25 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
     //TODO - PUT MARKER IN POSITION
 
-    //Origin Stuff
-    if(originSelectedItem == "Origin 1"){
-      //Sets the coordinates to Origin 1
-      sourceLocation = LatLng(37.32291173371677, -122.01412296938393);
-    } else if(originSelectedItem == "Origin 2"){
-      //Sets the coordinates to Origin 2
-      sourceLocation = LatLng(37.32291173371678, -122.01412296938393);
-    } else if(originSelectedItem == "Origin 3"){
-      //Sets the coordinates to Origin 3
-      sourceLocation = LatLng(38.76790794827859, -9.207101960072684);
+    if(originSelectedItem == "Localização Atual"){
+
+      //Sets the coordinates to Localização Atual
+      sourceLocation = LatLng(38.569791168839295, -7.906492510540867);
+
+    }else if(originSelectedItem == "Lisboa"){
+
+      //Sets the coordinates to Lisboa
+      sourceLocation = lisboaSourceLocation;
+
+    } else if(originSelectedItem == "Porto"){
+
+      //Sets the coordinates to Porto
+      sourceLocation = portoSourceLocation;
+
+    } else if(originSelectedItem == "Coimbra"){
+
+      //Sets the coordinates to Coimbra
+      sourceLocation = coimbraSourceLocation;
     }
     
     
@@ -208,11 +233,11 @@ class GoogleMapState extends State<GoogleMapActivity> {
                   position: sourceLocation,
                   
                 ),
-
+                //Current Location Normal Handicap
                 //Destination 1 - Park Normal
                 Marker(
                   icon: destinationHandicapNormalIcon,
-                  markerId: const MarkerId("destination1"),
+                  markerId: const MarkerId("currentLocationNormalHandicap"),
                   position: destinationHandicapNormal,
                   onTap: () {
                     //https://www.youtube.com/watch?v=4pn-_md5Ol4
@@ -287,10 +312,11 @@ class GoogleMapState extends State<GoogleMapActivity> {
                   },
                 ),
 
+                //Current Location Full Handicap
                 //Destination - Almost Full Handicap Parking
                 Marker(
                   icon: destinationHandicapFullIcon,
-                  markerId: const MarkerId("destination2"),
+                  markerId: const MarkerId("currentLocationFullHandicap"),
                   position: destinationHandicapFull,
                   onTap: () {
                     //https://www.youtube.com/watch?v=4pn-_md5Ol4
@@ -365,11 +391,720 @@ class GoogleMapState extends State<GoogleMapActivity> {
                   },
                 ),
 
+                //Current Location Empty Handicap
                 //Destination 3 - Free Handicap Parking
                 Marker(
                   icon: destinationHandicapEmptyIcon,
-                  markerId: const MarkerId("destination3"),
+                  markerId: const MarkerId("currentLocationEmptyHandicap"),
                   position: destinationEmpty,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+                //LISBOA
+                //LISBOA Normal Handicap
+                Marker(
+                  icon: destinationHandicapNormalIcon,
+                  markerId: const MarkerId("lisboaNormalHandicap"),
+                  position: lisboaDestinationHandicapNormal,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+                //LISBOA Full Handicap
+                Marker(
+                  icon: destinationHandicapFullIcon,
+                  markerId: const MarkerId("lisboaFullHandicap"),
+                  position: lisboaDestinationHandicapFull,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+                //LISBOA Empty Handicap
+                Marker(
+                  icon: destinationHandicapEmptyIcon,
+                  markerId: const MarkerId("lisboaEmptyHandicap"),
+                  position: lisboaDestinationEmpty,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+
+                //PORTO
+
+                //PORTO Normal Handicap
+                Marker(
+                  icon: destinationHandicapNormalIcon,
+                  markerId: const MarkerId("portoNormalHandicap"),
+                  position: portoDestinationHandicapNormal,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+                //PORTO Full Handicap
+                Marker(
+                  icon: destinationHandicapFullIcon,
+                  markerId: const MarkerId("portoFullHandicap"),
+                  position: portoDestinationHandicapFull,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+                //PORTO Empty Handicap
+                Marker(
+                  icon: destinationHandicapEmptyIcon,
+                  markerId: const MarkerId("portoEmptyHandicap"),
+                  position: portoDestinationEmpty,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+                //COIMBRA
+
+                //COIMBRA Normal Handicap
+                Marker(
+                  icon: destinationHandicapNormalIcon,
+                  markerId: const MarkerId("coimbraNormalHandicap"),
+                  position: coimbraDestinationHandicapNormal,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+                //COIMBRA Full Handicap
+                Marker(
+                  icon: destinationHandicapFullIcon,
+                  markerId: const MarkerId("coimbraFullHandicap"),
+                  position: coimbraDestinationHandicapFull,
+                  onTap: () {
+                    //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    showDialog(
+                      context: context,
+                      builder: (context) => 
+                      SizedBox(
+                        width: 30.0,
+                        height: 250.0,
+                        child: AlertDialog(
+                        title: Text(parkingName),
+                        content: Column(
+                          children: [
+                            //One Row for each Item inside the Pop-Up
+                            Row(
+                              children: [
+                                Text("Lugares de Necessidades Especiais: "),
+                                Text('$parkingNumbersListSize'),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Número do Lugar: "),
+                                DropdownButton<int>(
+                                  //https://youtu.be/GHkwpepeLoE
+                                  value: selectedItem,
+                                  onChanged: (int? newValue) {
+                                    if (newValue != null) {
+                                      // Update the selected item when the user makes a selection
+                                      selectedItem = newValue;
+                                    }
+                                  },
+                                  items: parkNumbersList.map((int item) {
+                                    return DropdownMenuItem<int>(
+                                      value: item,
+                                      child: Text('$item'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text("Pago: "),
+                                Text(paidPark ? 'Sim' : 'Não'),
+                              ],
+                            )
+                            
+                          ]
+                          ),
+                        actions: [
+                          TextButton(
+                            child: Text("Reservar Lugar"), 
+                            onPressed: () => {
+                              reserveParkingSpot(destinationEmpty),
+                              Navigator.pop(context)
+                              },
+                          ),
+
+                          TextButton(
+                            child: Text("Cancelar"), 
+                            onPressed: () => {
+                              Navigator.pop(context)
+                            },
+                          )
+                        ],
+                        )
+                      )
+                    );
+                  },
+                ),
+
+                //COIMBRA Empty Handicap
+                Marker(
+                  icon: destinationHandicapEmptyIcon,
+                  markerId: const MarkerId("coimbraHandicapHandicap"),
+                  position: coimbraDestinationEmpty,
                   onTap: () {
                     //https://www.youtube.com/watch?v=4pn-_md5Ol4
                     showDialog(
@@ -446,7 +1181,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
               
             ),
 
-          /*Positioned(
+          Positioned(
               left: 10.0, // Adjust right as needed
               top: 10.0,
               child:
@@ -478,37 +1213,6 @@ class GoogleMapState extends State<GoogleMapActivity> {
                 )
           ),
 
-            /*Positioned(
-              right: 110.0, // Adjust right as needed
-              top: 10.0, // Adjust top as needed
-              child: Container(
-              width: 130,
-              color: Colors.blue.withOpacity(0.5),
-              child: 
-
-                    DropdownButton<String>(
-                                  
-                                  //https://youtu.be/GHkwpepeLoE
-                                  value: destinationSelectedItem,
-                                  onChanged: (String? newValue) {
-                                    if (newValue != null) {
-                                      setState(() {
-                                      // Update the selected item when the user makes a selection
-                                        destinationSelectedItem = newValue;
-                                      });
-                                    }
-                                  },
-                                  items: destinationList.map((String item) {
-                                    return DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text('$item'),
-                                    );
-                                  }).toList(),
-                                ),
-
-            )),*/
-
-
             Positioned(
               right: 5.0, // Adjust right as needed
               top: 10.0, // Adjust top as needed
@@ -517,10 +1221,10 @@ class GoogleMapState extends State<GoogleMapActivity> {
               
               child: 
                      ElevatedButton(
-                      onPressed: searchPlace,
+                      onPressed: () => {searchPlace},
                       child: const Text('Pesquisar'),
               )
-            ))*/
+            ))
 
             ],
             ),
