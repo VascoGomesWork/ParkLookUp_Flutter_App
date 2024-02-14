@@ -41,7 +41,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
   
   final Completer<GoogleMapController> _controller = Completer();
 
-  static LatLng sourceLocation = LatLng(38.76652577305104, -9.205742309064581);
+  static LatLng sourceLocation = LatLng(38.765720610090774, -9.205036667402148);
   static LatLng destinationHandicapNormal = LatLng(38.80202179114487, -9.17810434050634);
   static const LatLng destinationHandicapFull = LatLng(38.77579639495337, -9.215869841502556);
   static const LatLng destinationEmpty = LatLng(38.76027069793011, -9.16162484916254);
@@ -145,12 +145,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
   void reserveParkingSpot(LatLng destination){
     getPolyPoints(destination);
+
+    //Passar a Informação para o User Service e mostrar na lista e nos detalhes do parque
   }
 
   @override
   void initState(){
 
-    getPolyPoints(const LatLng(38.767900126389385, -9.207630095461537));
+    getPolyPoints(const LatLng(38.76602254726568, -9.2053378559166));
     
     super.initState();
     setCustomMarkerIcon();
