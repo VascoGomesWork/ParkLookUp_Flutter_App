@@ -43,24 +43,30 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
   /////////////////////////////////////////SOURCE LOCATION/////////////////////////////////////////////////////////////////////////
   static LatLng sourceLocation = LatLng(38.569791168839295, -7.906492510540867);
+  static LatLng initialDestinationSourceLocation = LatLng(38.57005702971896, -7.9065052341653645);
   static LatLng destinationHandicapNormal = LatLng(38.57373688370198, -7.912808185813289);
   static const LatLng destinationHandicapFull = LatLng(38.57173204693666, -7.903861526859222);
   static const LatLng destinationEmpty = LatLng(38.57783548697596, -7.905856004970001);
 /////////////////////////////////////////////LISBOA////////////////////////////////////////////////////////////////////////////////
   static LatLng lisboaSourceLocation = LatLng(38.765720610090774, -9.205036667402148);
+  static LatLng initialDestinationLisboa = LatLng(38.76581005929401, -9.205117224984388);
   static LatLng lisboaDestinationHandicapNormal = LatLng(38.80202179114487, -9.17810434050634);
   static const LatLng lisboaDestinationHandicapFull = LatLng(38.77579639495337, -9.215869841502556);
   static const LatLng lisboaDestinationEmpty = LatLng(38.76027069793011, -9.16162484916254);
 //////////////////////////////////////////////PORTO//////////////////////////////////////////////////////////////////////////////////
   static LatLng portoSourceLocation = LatLng(41.16286622732716, -8.63916461073044);
+  static LatLng initialDestinationPorto = LatLng(41.16288825662522, -8.63918438983451);
   static LatLng portoDestinationHandicapNormal = LatLng(41.15845123589461, -8.645180183854443);
   static const LatLng portoDestinationHandicapFull = LatLng(41.162923193015004, -8.63780259417406);
   static const LatLng portoDestinationEmpty = LatLng(41.15808093277244, -8.641018466598842);
 ////////////////////////////////////////////COIMBRA//////////////////////////////////////////////////////////////////////////////////
   static LatLng coimbraSourceLocation = LatLng(40.19754414214365, -8.413450623040502);
+  static LatLng initialDestinationCoimbra = LatLng(40.19749222091944, -8.413671928239161);
   static LatLng coimbraDestinationHandicapNormal = LatLng(40.199049993598386, -8.408925899843966);
   static const LatLng coimbraDestinationHandicapFull = LatLng(40.19959307935994, -8.40472437116147);
   static const LatLng coimbraDestinationEmpty = LatLng(40.19618637855491, -8.40042588412476);
+
+  LatLng destinationPoints = initialDestinationSourceLocation;
 
   List<LatLng> polylineCoordinates = [];
   
@@ -78,16 +84,22 @@ class GoogleMapState extends State<GoogleMapActivity> {
   void getPolyPoints(LatLng destination) async {
     PolylinePoints polylinePoints = PolylinePoints();
 
+    destinationPoints = destination;
+
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       google_api_key, 
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude), 
-      PointLatLng(destination.latitude, destination.longitude),
-      
+      //FIX DESTINATION
+      PointLatLng(destinationPoints.latitude, destinationPoints.longitude),
+      //FIX THE ROUTE
       );
-
+      //IMPORTANT CHECKS
+      print("IS NOT EMPTY = ");
+      print(polylineCoordinates);
       //Removes Previous Coordinates
       if(polylineCoordinates.isNotEmpty){
-        polylineCoordinates.removeAt(0);
+        polylineCoordinates.clear();
+        print("COORDINATES = ");
         print(polylineCoordinates);
       }
 
@@ -133,12 +145,6 @@ class GoogleMapState extends State<GoogleMapActivity> {
       },
     );
 
-    /*BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/car.png")
-    .then((icon) => {
-        currentLocationIcon = icon
-      },
-    );*/
-
   }
 
   Future<void> searchPlace() async {
@@ -153,10 +159,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
         //Sets the coordinates to Localização Atual
         sourceLocation = const LatLng(38.569791168839295, -7.906492510540867),
         cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5),
+        destinationPoints = initialDestinationSourceLocation,
+        //If the source point changes so it the destination
+        getPolyPoints(initialDestinationSourceLocation)
       });
       
         final GoogleMapController controller = await _controller.future;
         controller.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        
 
     }else if(originSelectedItem == "Lisboa"){
 
@@ -164,17 +174,24 @@ class GoogleMapState extends State<GoogleMapActivity> {
         //Sets the coordinates to Lisboa
         sourceLocation = lisboaSourceLocation,
         cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5),
+        destinationPoints = initialDestinationLisboa,
+        //If the source point changes so it the destination
+        getPolyPoints(initialDestinationLisboa)
       });
       //https://stackoverflow.com/questions/62722671/google-maps-camera-position-updating-issues-in-flutter
         final GoogleMapController controller = await _controller.future;
         controller.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        
 
     } else if(originSelectedItem == "Porto"){
 
       setState(() => {
         //Sets the coordinates to Porto
         sourceLocation = portoSourceLocation,
-        cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5)
+        cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5),
+        destinationPoints = initialDestinationPorto,
+        //If the source point changes so it the destination
+        getPolyPoints(initialDestinationPorto)
       });
       
         final GoogleMapController controller = await _controller.future;
@@ -185,7 +202,10 @@ class GoogleMapState extends State<GoogleMapActivity> {
       setState(() => {
         //Sets the coordinates to Coimbra
         sourceLocation = coimbraSourceLocation,
-        cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5)
+        cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5),
+        destinationPoints = initialDestinationCoimbra,
+        //If the source point changes so it the destination
+        getPolyPoints(initialDestinationCoimbra)
       });
 
         final GoogleMapController controller = await _controller.future;
@@ -205,7 +225,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
   @override
   void initState(){
 
-    getPolyPoints(const LatLng(38.76602254726568, -9.2053378559166));
+    getPolyPoints(initialDestinationSourceLocation);
     
     super.initState();
     setCustomMarkerIcon();
@@ -557,7 +577,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(lisboaDestinationHandicapNormal),
                               Navigator.pop(context)
                               },
                           ),
@@ -635,7 +655,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(lisboaDestinationHandicapFull ),
                               Navigator.pop(context)
                               },
                           ),
@@ -713,7 +733,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(lisboaDestinationEmpty ),
                               Navigator.pop(context)
                               },
                           ),
@@ -794,7 +814,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(portoDestinationHandicapNormal ),
                               Navigator.pop(context)
                               },
                           ),
@@ -872,7 +892,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(portoDestinationHandicapFull ),
                               Navigator.pop(context)
                               },
                           ),
@@ -950,7 +970,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(portoDestinationEmpty ),
                               Navigator.pop(context)
                               },
                           ),
@@ -1030,7 +1050,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(coimbraDestinationHandicapNormal),
                               Navigator.pop(context)
                               },
                           ),
@@ -1108,7 +1128,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(coimbraDestinationHandicapFull),
                               Navigator.pop(context)
                               },
                           ),
@@ -1186,7 +1206,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           TextButton(
                             child: Text("Reservar Lugar"), 
                             onPressed: () => {
-                              reserveParkingSpot(destinationEmpty),
+                              reserveParkingSpot(coimbraDestinationEmpty),
                               Navigator.pop(context)
                               },
                           ),
