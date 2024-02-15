@@ -72,6 +72,9 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
   GlobalKey<GoogleMapState> googleMapKey = GlobalKey<GoogleMapState>();
 
+  //CAMERA POSITION
+  CameraPosition cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5);
+
   void getPolyPoints(LatLng destination) async {
     PolylinePoints polylinePoints = PolylinePoints();
 
@@ -138,7 +141,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
   }
 
-  void searchPlace(){
+  Future<void> searchPlace() async {
     print("Origin = ");
     print(originSelectedItem);
 
@@ -146,23 +149,48 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
     if(originSelectedItem == "Localização Atual"){
 
-      //Sets the coordinates to Localização Atual
-      sourceLocation = LatLng(38.569791168839295, -7.906492510540867);
+      setState(() => {
+        //Sets the coordinates to Localização Atual
+        sourceLocation = const LatLng(38.569791168839295, -7.906492510540867),
+        cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5),
+      });
+      
+        final GoogleMapController controller = await _controller.future;
+        controller.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     }else if(originSelectedItem == "Lisboa"){
 
-      //Sets the coordinates to Lisboa
-      sourceLocation = lisboaSourceLocation;
+      setState(() => {
+        //Sets the coordinates to Lisboa
+        sourceLocation = lisboaSourceLocation,
+        cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5),
+      });
+      //https://stackoverflow.com/questions/62722671/google-maps-camera-position-updating-issues-in-flutter
+        final GoogleMapController controller = await _controller.future;
+        controller.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     } else if(originSelectedItem == "Porto"){
 
-      //Sets the coordinates to Porto
-      sourceLocation = portoSourceLocation;
+      setState(() => {
+        //Sets the coordinates to Porto
+        sourceLocation = portoSourceLocation,
+        cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5)
+      });
+      
+        final GoogleMapController controller = await _controller.future;
+        controller.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     } else if(originSelectedItem == "Coimbra"){
 
-      //Sets the coordinates to Coimbra
-      sourceLocation = coimbraSourceLocation;
+      setState(() => {
+        //Sets the coordinates to Coimbra
+        sourceLocation = coimbraSourceLocation,
+        cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5)
+      });
+
+        final GoogleMapController controller = await _controller.future;
+        controller.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
+      
     }
     
     
@@ -209,12 +237,10 @@ class GoogleMapState extends State<GoogleMapActivity> {
                 
               GoogleMap(
               key: googleMapKey,
-              initialCameraPosition: 
-              CameraPosition(
-                target: sourceLocation,
-                zoom: 14.5,
-              ),
-
+              initialCameraPosition: cameraPosition,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
               polylines: {
                 //https://youtu.be/B9hsWOCXb_o
                 Polyline(
@@ -1221,7 +1247,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
               
               child: 
                      ElevatedButton(
-                      onPressed: () => {searchPlace},
+                      onPressed: () => searchPlace(),
                       child: const Text('Pesquisar'),
               )
             ))
