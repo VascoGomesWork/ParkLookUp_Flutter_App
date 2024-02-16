@@ -6,17 +6,57 @@ void main() {
   runApp(MaterialApp(home: Login()));
 }
 
-UserInfo userInfo = UserInfo();
 
-void login(BuildContext buildContext){
-  userInfo.showData();
-  Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
-    return Map();
-  }));
-}
+
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Register'),
+        ),
+        body: MyTextFieldWidget(),
+      ),
+    );
+  }
+}
+
+class MyTextFieldWidget extends StatefulWidget {
+  @override
+  _MyTextFieldWidgetState createState() => _MyTextFieldWidgetState();
+}
+
+class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
+
+  String userName = "";
+  String password = "";
+
+  void updateUsername(String value){
+    setState((){
+      userName = value;
+    });
+  }
+
+  void updatePassword(String value){
+    setState((){
+      password = value;
+    });
+  }
+
+  Future<void> login(BuildContext buildContext) async {
+
+  UserInfo userInfo = UserInfo("", "", "", "");
+  
+  if(await userInfo.checkLoginCredentials(userName, password)){
+    Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
+      return Map();
+    }));
+  } else {
+    //INCORRECT LOGGIN DATA -> SHOW WARNING
+  }
+}
 
   // This widget is the root of your application.
   @override
@@ -39,6 +79,7 @@ class Login extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: TextField(
+                      onChanged: updateUsername,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(90.0),
@@ -51,6 +92,7 @@ class Login extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: TextField(
+                      onChanged: updatePassword,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(

@@ -43,7 +43,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   String password = "";
   String repeatPassword = "";
 
-  UserInfo userInfo = new UserInfo();
+  
 
   void updateName(String value){
     setState((){
@@ -87,16 +87,12 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
     if(nameValue.isNotEmpty && userName.isNotEmpty && userEmail.isNotEmpty && password.isNotEmpty && repeatPassword.isNotEmpty && password == repeatPassword){
       //Calls the Service and Navigates away
       print("Registo efetuado com sucesso");
+      UserInfo userInfo = UserInfo(nameValue, userName, userEmail, password);
+      userInfo.writeDataToJSON(nameValue, userName, userEmail, password);
 
-      userInfo.name = nameValue;
-      userInfo.username = userName;
-      userInfo.email = userEmail;
-      userInfo.password = password;
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     
     }
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
   }
 
   // This widget is the root of your application.
