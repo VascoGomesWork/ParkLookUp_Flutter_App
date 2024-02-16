@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'services/UserService.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp()));
 }
+
+
 
 void login(BuildContext buildContext){
   Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
@@ -11,8 +14,90 @@ void login(BuildContext buildContext){
   }));
 }
 
+
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Register'),
+        ),
+        body: MyTextFieldWidget(),
+      ),
+    );
+  }
+}
+
+class MyTextFieldWidget extends StatefulWidget {
+  @override
+  _MyTextFieldWidgetState createState() => _MyTextFieldWidgetState();
+}
+
+class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
+  
+  //const MyApp({Key? key}) : super(key: key);
+  String nameValue = "";
+  String userName = "";
+  String userEmail = "";
+  String password = "";
+  String repeatPassword = "";
+
+  UserInfo userInfo = new UserInfo();
+
+  void updateName(String value){
+    setState((){
+      nameValue = value;
+    });
+  }
+
+  void updateUsername(String value){
+    setState((){
+      userName = value;
+    });
+  }
+
+  void updateEmail(String value){
+    setState((){
+      userEmail = value;
+    });
+  }
+
+  void updatePassword(String value){
+    setState((){
+      password = value;
+    });
+  }
+
+  void updateRepeatPassword(String value){
+    setState((){
+      repeatPassword = value;
+    });
+  }
+
+  void register(){
+
+    print("Final Name Value = " + nameValue);
+    print("Final UserName Value = " + userName);
+    print("Final Email Value = " + userEmail);
+    print("Final Password Value = " + password);
+    print("Final Repeat Password Value = " + repeatPassword);
+
+
+    if(nameValue.isNotEmpty && userName.isNotEmpty && userEmail.isNotEmpty && password.isNotEmpty && repeatPassword.isNotEmpty && password == repeatPassword){
+      //Calls the Service and Navigates away
+      print("Registo efetuado com sucesso");
+
+      userInfo.name = nameValue;
+      userInfo.username = userName;
+      userInfo.email = userEmail;
+      userInfo.password = password;
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+    
+    }
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+  }
 
   // This widget is the root of your application.
   @override
@@ -37,6 +122,7 @@ class MyApp extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                     child: TextField(
+                      onChanged: updateName,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(90.0),
@@ -50,6 +136,7 @@ class MyApp extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: TextField(
+                      onChanged: updateUsername,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(90.0),
@@ -62,6 +149,7 @@ class MyApp extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: TextField(
+                      onChanged: updateEmail,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(90.0),
@@ -74,6 +162,7 @@ class MyApp extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: TextField(
+                      onChanged: updatePassword,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -87,6 +176,7 @@ class MyApp extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: TextField(
+                      onChanged: updateRepeatPassword,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -106,8 +196,7 @@ class MyApp extends StatelessWidget {
                         ),
                         child: const Text('Efetuar Registo'),
                         onPressed: () {
-                          login(context);
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+                          register();
                         },
                       )),
 

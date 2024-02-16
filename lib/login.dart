@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'map.dart';
+import 'services/UserService.dart';
 
 void main() {
   runApp(MaterialApp(home: Login()));
 }
 
-void getInside(BuildContext buildContext){
+UserInfo userInfo = UserInfo();
+
+void login(BuildContext buildContext){
+  userInfo.showData();
   Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
     return Map();
   }));
@@ -66,7 +70,7 @@ class Login extends StatelessWidget {
                         ),
                         child: const Text('Log In'),
                         onPressed: () {
-                          getInside(context);
+                          login(context);
                         },
                       )),
 
