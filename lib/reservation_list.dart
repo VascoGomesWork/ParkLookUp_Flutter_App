@@ -1,231 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:parking_space_project/park_details.dart';
 import 'services/UserService.dart';
-/// Flutter code sample for [ListTile] selection in a [ListView] or [GridView].
+import 'park_details.dart';
 
 void main() => runApp(const MaterialApp(home: ReservationList()));
-List<dynamic> userParkingListJsonData = ["ola", "1", "3"];
-
-//Get List Data
 
 UserParkingInfo userParkingInfo = UserParkingInfo("", -1, false);
-
-
 
 class ReservationList extends StatelessWidget {
   const ReservationList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: ListTileSelectExample(),
+    return MaterialApp(
+      home: MyHomePage(),
     );
   }
 }
 
-class ListTileSelectExample extends StatefulWidget {
-  const ListTileSelectExample({super.key});
-
+class MyHomePage extends StatefulWidget {
   @override
-  ListTileSelectExampleState createState() => ListTileSelectExampleState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class ListTileSelectExampleState extends State<ListTileSelectExample> {
-  bool isSelectionMode = false;
-  late int listLength = userParkingListJsonData.length;
-  late List<bool> _selected;
-  final bool _selectAll = false;
-  final bool _isGridMode = false;
-  
+class _MyHomePageState extends State<MyHomePage> {
+  List<String> items = [];
+  List<dynamic> userParkingListJsonData = [];
+
 
   @override
   void initState() {
-
     super.initState();
-    initializeSelection();
+    // Simulate fetching data
+    getDataToList().then((data) {
+      setState(() {
+        userParkingListJsonData = data;
+      });
+      // After list initialization
+      print('List initialized with ${userParkingListJsonData.length} items');
+    });
   }
 
-  void initializeSelection() {
+  Future<List<dynamic>> getDataToList() async{
 
-    
-    _selected = List<bool>.generate(listLength, (_) => false);
+    List<dynamic> userParkingListLocalJsonData = await userParkingInfo.getUserListParkingSpot();
+
+    return userParkingListLocalJsonData;
+
   }
 
-  @override
-  void dispose() {
-
-    _selected.clear();
-    super.dispose();
+  void getParkDetails(BuildContext buildContext){
+    Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
+      return  ParkDetails();
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _isGridMode
-            ? GridBuilder(
-                isSelectionMode: isSelectionMode,
-                selectedList: _selected,
-                onSelectionChange: (bool x) {
-                  setState(() {
-                    isSelectionMode = x;
-                  });
-                },
-              )
-            : ListBuilder(
-                isSelectionMode: isSelectionMode,
-                selectedList: _selected,
-                onSelectionChange: (bool x) {
-                  setState(() {
-                    isSelectionMode = x;
-                  });
-                },
-              ));
-  }
-}
-
-class GridBuilder extends StatefulWidget {
-  const GridBuilder({
-    super.key,
-    required this.selectedList,
-    required this.isSelectionMode,
-    required this.onSelectionChange,
-  });
-
-  final bool isSelectionMode;
-  final ValueChanged<bool>? onSelectionChange;
-  final List<bool> selectedList;
-
-  @override
-  GridBuilderState createState() => GridBuilderState();
-}
-
-class GridBuilderState extends State<GridBuilder> {
-  void _toggle(int index) {
-    if (widget.isSelectionMode) {
-      setState(() {
-        widget.selectedList[index] = !widget.selectedList[index];
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-        itemCount: widget.selectedList.length,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (_, int index) {
-          return InkWell(
-            onTap: () => _toggle(index),
-            onLongPress: () {
-              if (!widget.isSelectionMode) {
-                setState(() {
-                  widget.selectedList[index] = true;
-                });
-                widget.onSelectionChange!(true);
-              }
-            },
-            child: GridTile(
-                child: Container(
-              child: widget.isSelectionMode
-                  ? Checkbox(
-                      onChanged: (bool? x) => _toggle(index),
-                      value: widget.selectedList[index])
-                  : const Icon(Icons.image),
-            )),
-          );
-        });
-  }
-}
-
-class ListBuilder extends StatefulWidget {
-  const ListBuilder({
-    super.key,
-    required this.selectedList,
-    required this.isSelectionMode,
-    required this.onSelectionChange,
-  });
-
-  final bool isSelectionMode;
-  final List<bool> selectedList;
-  final ValueChanged<bool>? onSelectionChange;
-
-  @override
-  State<ListBuilder> createState() => _ListBuilderState();
-}
-
-class _ListBuilderState extends State<ListBuilder> {
-
-  @override
-  void initState() {
-
-    super.initState();
-
-    getDataToList();
-  }
-
-  Future<void> getDataToList() async{
-
-    List<dynamic> userParkingListLocalJsonData = await userParkingInfo.getUserListParkingSpot();
-
-    setState(() {
-      userParkingListJsonData.addAll(userParkingListLocalJsonData);
-      print("FODASSE = " + userParkingListJsonData.toString());
-    });
-
-  }
-
-  void _toggle(int index, BuildContext buildContext) {
-    if (widget.isSelectionMode) {
-      setState(() {
-        widget.selectedList[index] = !widget.selectedList[index];
-      });
-    }
-
-    print("Teste Index = ");
-    print(index);
-
-
-    UserParkingInfo userParkingInfo = UserParkingInfo("", -1, false);
-    userParkingInfo.getUserListParkingSpot();
-
-    /*Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
-      return ParkDetails(/*index: index*/);
-    }));*/
-
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ParkDetails())
+      body: ListView.builder(
+        itemCount: userParkingListJsonData.length,
+        
+        itemBuilder: (context, index) {
+          // Conditional logic for the last item
+          if (index == userParkingListJsonData.length) {
+            // Perform action after list initialization
+            // Example: Display a message for the last item
+            
+          } else {
+            // Regular list item
+            return ListTile(
+              onTap: () => getParkDetails(context),
+              title: Text(userParkingListJsonData[index]["name"]),
+            );
+          }
+        },
+      ),
     );
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return ListView.builder(
-        itemCount: widget.selectedList.length,
-        itemBuilder: (_, int index) {
-          
-          return ListTile(
-              onTap: () => _toggle(index, context),
-              onLongPress: () {
-                if (!widget.isSelectionMode) {
-                  setState(() {
-                    widget.selectedList[index] = true;
-                  });
-                  widget.onSelectionChange!(true);
-                }
-              },
-              trailing: widget.isSelectionMode
-                  ? Checkbox(
-                      value: widget.selectedList[index],
-                      onChanged: (bool? x) => _toggle(index, context),
-                    )
-                  : const SizedBox.shrink(),
-              title: 
-              Text(userParkingListJsonData[index]));
-        });
   }
 }

@@ -35,7 +35,7 @@ class MyTextPage extends StatelessWidget {
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  const ReservationList())
+                      MaterialPageRoute(builder: (context) =>  ReservationList())
                     );
 
                   },
