@@ -48,9 +48,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 
-  void getParkDetails(BuildContext buildContext){
+  void getParkDetails(BuildContext buildContext, Map<String, dynamic> userParkingInfo){
+
+    print("TESTE FODASSE = " + userParkingInfo["name"]);
+
     Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
-      return  ParkDetails();
+      return new ParkDetails(new UserParkingInfo(userParkingInfo["name"], userParkingInfo["specialNecessityParkNumber"], userParkingInfo["paidPark"]));
     }));
   }
 
@@ -69,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
           } else {
             // Regular list item
             return ListTile(
-              onTap: () => getParkDetails(context),
+              onTap: () => getParkDetails(context, userParkingListJsonData[index]),
               title: Text(userParkingListJsonData[index]["name"]),
             );
           }
