@@ -195,19 +195,21 @@ class UserParkingInfo{
     return List.empty();
   }
 
-  Future<void> getUserListParkingSpot() async {
+  Future<List<dynamic>> getUserListParkingSpot() async {
 
     List<dynamic> jsonData = await readUserListParkingJSONData("UserParkingInfo");
 
     if(jsonData != List.empty()){
 
-      print("Nome do Parque Map Data = ${jsonData[0]["name"]}");
-      print("Número do Parque de Estacionamento Map Data = ${jsonData[0]["specialNecessityParkNumber"]}");
-      print("Parque Pago Map Data = ${jsonData[0]["paidPark"]}");
+      for(int i = 0; i < jsonData.length; i++){
+        print("Nome do Parque Map Data = ${jsonData[i]["name"]}");
+        print("Número do Parque de Estacionamento Map Data = ${jsonData[i]["specialNecessityParkNumber"]}");
+        print("Parque Pago Map Data = ${jsonData[i]["paidPark"]}");
+      }
 
+      return jsonData;
     }
-
-    
+    return List.empty();
   }
 
 }

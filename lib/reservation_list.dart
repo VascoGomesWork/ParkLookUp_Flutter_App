@@ -1,10 +1,16 @@
-
 import 'package:flutter/material.dart';
 import 'package:parking_space_project/park_details.dart';
 import 'services/UserService.dart';
 /// Flutter code sample for [ListTile] selection in a [ListView] or [GridView].
 
 void main() => runApp(const MaterialApp(home: ReservationList()));
+List<dynamic> userParkingListJsonData = ["ola", "1", "3"];
+
+//Get List Data
+
+UserParkingInfo userParkingInfo = UserParkingInfo("", -1, false);
+
+
 
 class ReservationList extends StatelessWidget {
   const ReservationList({super.key});
@@ -26,23 +32,28 @@ class ListTileSelectExample extends StatefulWidget {
 
 class ListTileSelectExampleState extends State<ListTileSelectExample> {
   bool isSelectionMode = false;
-  final int listLength = 30;
+  late int listLength = userParkingListJsonData.length;
   late List<bool> _selected;
   final bool _selectAll = false;
   final bool _isGridMode = false;
+  
 
   @override
   void initState() {
+
     super.initState();
     initializeSelection();
   }
 
   void initializeSelection() {
+
+    
     _selected = List<bool>.generate(listLength, (_) => false);
   }
 
   @override
   void dispose() {
+
     _selected.clear();
     super.dispose();
   }
@@ -144,6 +155,26 @@ class ListBuilder extends StatefulWidget {
 }
 
 class _ListBuilderState extends State<ListBuilder> {
+
+  @override
+  void initState() {
+
+    super.initState();
+
+    getDataToList();
+  }
+
+  Future<void> getDataToList() async{
+
+    List<dynamic> userParkingListLocalJsonData = await userParkingInfo.getUserListParkingSpot();
+
+    setState(() {
+      userParkingListJsonData.addAll(userParkingListLocalJsonData);
+      print("FODASSE = " + userParkingListJsonData.toString());
+    });
+
+  }
+
   void _toggle(int index, BuildContext buildContext) {
     if (widget.isSelectionMode) {
       setState(() {
@@ -165,16 +196,18 @@ class _ListBuilderState extends State<ListBuilder> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  const ParkDetails())
+      MaterialPageRoute(builder: (context) => ParkDetails())
     );
 
   }
 
   @override
   Widget build(BuildContext context) {
+
     return ListView.builder(
         itemCount: widget.selectedList.length,
         itemBuilder: (_, int index) {
+          
           return ListTile(
               onTap: () => _toggle(index, context),
               onLongPress: () {
@@ -191,7 +224,8 @@ class _ListBuilderState extends State<ListBuilder> {
                       onChanged: (bool? x) => _toggle(index, context),
                     )
                   : const SizedBox.shrink(),
-              title: Text('item $index'));
+              title: 
+              Text(userParkingListJsonData[index]));
         });
   }
 }
