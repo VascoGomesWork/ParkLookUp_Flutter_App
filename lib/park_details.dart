@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';  
 import 'package:parking_space_project/reservation_list.dart';
   
-void main() { runApp(ParkDetails()); }  
+void main() { runApp(const ParkDetails()); }  
   
-class ParkDetails extends StatelessWidget {  
+class ParkDetails extends StatelessWidget {
+  const ParkDetails({super.key});
+  
   @override  
   Widget build(BuildContext context) {  
-    return MaterialApp(  
+    return const MaterialApp(  
         
         home: MyTextPage()  
     );  
   }  
 }  
-class MyTextPage extends StatelessWidget {  
+class MyTextPage extends StatelessWidget {
+  const MyTextPage({super.key});
+  
   @override  
   Widget build(BuildContext context) {  
     return Scaffold(  
@@ -21,7 +25,7 @@ class MyTextPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Container(
-                child:Text("Welcome to Javatpoint")
+                child:const Text("Welcome to Javatpoint")
                 ),
               
               
@@ -31,7 +35,7 @@ class MyTextPage extends StatelessWidget {
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  ReservationList())
+                      MaterialPageRoute(builder: (context) =>  const ReservationList())
                     );
 
                   },

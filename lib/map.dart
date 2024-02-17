@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:parking_space_project/google_map.dart';
 import 'package:parking_space_project/reservation_list.dart';
 
-void main() => runApp(MaterialApp(home: Map()));
+void main() => runApp(const MaterialApp(home: Map()));
 
 class Map extends StatelessWidget {
   const Map({super.key});

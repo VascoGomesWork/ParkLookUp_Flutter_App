@@ -3,7 +3,7 @@ import 'login.dart';
 import 'services/UserService.dart';
 
 void main() {
-  runApp(MaterialApp(home: MyApp()));
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 
@@ -16,20 +16,24 @@ void login(BuildContext buildContext){
 
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Register'),
+          title: const Text('Register'),
         ),
-        body: MyTextFieldWidget(),
+        body: const MyTextFieldWidget(),
       ),
     );
   }
 }
 
 class MyTextFieldWidget extends StatefulWidget {
+  const MyTextFieldWidget({super.key});
+
   @override
   _MyTextFieldWidgetState createState() => _MyTextFieldWidgetState();
 }
@@ -77,11 +81,11 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
 
   void register(){
 
-    print("Final Name Value = " + nameValue);
-    print("Final UserName Value = " + userName);
-    print("Final Email Value = " + userEmail);
-    print("Final Password Value = " + password);
-    print("Final Repeat Password Value = " + repeatPassword);
+    print("Final Name Value = $nameValue");
+    print("Final UserName Value = $userName");
+    print("Final Email Value = $userEmail");
+    print("Final Password Value = $password");
+    print("Final Repeat Password Value = $repeatPassword");
 
 
     if(nameValue.isNotEmpty && userName.isNotEmpty && userEmail.isNotEmpty && password.isNotEmpty && repeatPassword.isNotEmpty && password == repeatPassword){
@@ -100,7 +104,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
             appBar: AppBar(
-              title: Text('Login Screen'),
+              title: const Text('Login Screen'),
             ),
             body: Center(
               child: Column(
@@ -110,7 +114,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
 
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-                    child: FlutterLogo(
+                    child: const FlutterLogo(
                       size: 20,
                     ),
                   ),
@@ -198,7 +202,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
 
                       Container(
                         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                        child: Text("Já tem conta? Realize o Login."),
+                        child: const Text("Já tem conta? Realize o Login."),
                     ),
 
                       Container(

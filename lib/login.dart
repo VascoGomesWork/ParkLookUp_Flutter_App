@@ -3,27 +3,31 @@ import 'map.dart';
 import 'services/UserService.dart';
 
 void main() {
-  runApp(MaterialApp(home: Login()));
+  runApp(const MaterialApp(home: Login()));
 }
 
 
 
 
 class Login extends StatelessWidget {
+  const Login({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Register'),
+          title: const Text('Register'),
         ),
-        body: MyTextFieldWidget(),
+        body: const MyTextFieldWidget(),
       ),
     );
   }
 }
 
 class MyTextFieldWidget extends StatefulWidget {
+  const MyTextFieldWidget({super.key});
+
   @override
   _MyTextFieldWidgetState createState() => _MyTextFieldWidgetState();
 }
@@ -51,7 +55,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   
   if(await userInfo.checkLoginCredentials(userName, password)){
     Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
-      return Map();
+      return const Map();
     }));
   } else {
     //INCORRECT LOGGIN DATA -> SHOW WARNING
@@ -72,7 +76,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
 
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-                    child: FlutterLogo(
+                    child: const FlutterLogo(
                       size: 40,
                     ),
                   ),

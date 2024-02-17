@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:parking_space_project/park_details.dart';
+import 'services/UserService.dart';
 /// Flutter code sample for [ListTile] selection in a [ListView] or [GridView].
 
-void main() => runApp(MaterialApp(home: ReservationList()));
+void main() => runApp(const MaterialApp(home: ReservationList()));
 
 class ReservationList extends StatelessWidget {
   const ReservationList({super.key});
@@ -27,8 +28,8 @@ class ListTileSelectExampleState extends State<ListTileSelectExample> {
   bool isSelectionMode = false;
   final int listLength = 30;
   late List<bool> _selected;
-  bool _selectAll = false;
-  bool _isGridMode = false;
+  final bool _selectAll = false;
+  final bool _isGridMode = false;
 
   @override
   void initState() {
@@ -153,6 +154,10 @@ class _ListBuilderState extends State<ListBuilder> {
     print("Teste Index = ");
     print(index);
 
+
+    UserParkingInfo userParkingInfo = UserParkingInfo("", -1, false);
+    userParkingInfo.getUserListParkingSpot();
+
     /*Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
       return ParkDetails(/*index: index*/);
     }));*/
@@ -160,7 +165,7 @@ class _ListBuilderState extends State<ListBuilder> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  ParkDetails())
+      MaterialPageRoute(builder: (context) =>  const ParkDetails())
     );
 
   }
