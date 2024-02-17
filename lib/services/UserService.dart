@@ -114,7 +114,31 @@ class UserParkingInfo{
     try{
       return {"UserInfo": {"name": jsonData[0]["name"].toString(), "username": jsonData[0]["username"].toString(), "email": jsonData[0]["email"].toString(), "password": jsonData[0]["password"].toString()}, "UserParkingInfo": [{"name": name, "specialNecessityParkNumber": specialNecessityParkNumber, "paidPark": paidPark}]};
     } catch (e){
-      return {"UserInfo": {"name": jsonData[0].toString(), "username": jsonData[1].toString(), "email": jsonData[2].toString(), "password": jsonData[3].toString()}, "UserParkingInfo": [{"name": name, "specialNecessityParkNumber": specialNecessityParkNumber, "paidPark": paidPark}]};
+      //TODO -> GET THE DATA FROM THE USERPARKINGLIST BEFORE AND USE A FOR LOOP TO ADD IT AGAIN AND ADD THE NEW DATA
+
+      //Get old data from the UserParkingInfoList
+      List<dynamic> oldParkingInfoJsonData = await readUserListParkingJSONData("UserParkingInfo");
+      List<dynamic> newParkingInfoJsonData = [];
+      UserParkingInfo newUserParkingInfoList = UserParkingInfo(name, specialNecessityParkNumber, paidPark);
+
+      //For Loop to loop through
+      for(int i = 0; i < oldParkingInfoJsonData.length; i++){
+        print("OLD PARKING LIST DATA NAME = " + oldParkingInfoJsonData[i]["name"].toString());
+        print("OLD PARKING LIST DATA PARKING NUMBER = " + oldParkingInfoJsonData[i]["specialNecessityParkNumber"].toString());
+        print("OLD PARKING LIST DATA PAID PARK = " + oldParkingInfoJsonData[i]["paidPark"].toString());
+
+        newParkingInfoJsonData.add({"name": oldParkingInfoJsonData[i]["name"].toString(), "specialNecessityParkNumber": oldParkingInfoJsonData[i]["specialNecessityParkNumber"].toString(), "paidPark": oldParkingInfoJsonData[i]["paidPark"].toString()});
+
+       
+        //oldParkingInfoJsonData[1][0];
+      }
+
+      newParkingInfoJsonData.add({"name": name, "specialNecessityParkNumber": specialNecessityParkNumber, "paidPark": paidPark});
+
+      print("NEW PARKING LIST = " + newParkingInfoJsonData.toString());
+
+
+      return {"UserInfo": {"name": jsonData[0].toString(), "username": jsonData[1].toString(), "email": jsonData[2].toString(), "password": jsonData[3].toString()}, "UserParkingInfo": newParkingInfoJsonData};
     }
   }
 
@@ -185,12 +209,5 @@ class UserParkingInfo{
 
     
   }
-
-}
-
-class AppState{
-
-  UserInfo userInfo = UserInfo("", "", "", "");
-  List<UserParkingInfo> userParkingInfoList = List.empty();
 
 }
