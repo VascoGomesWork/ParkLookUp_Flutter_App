@@ -5,6 +5,36 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 
+Future<String> get _localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+  return directory.path;
+}
+
+Future<void> writeJSONData(UserInfo userInfo) async {
+  final path = await _localPath;
+  final file = File("$path/data.json");
+  //UserInfo userInfo = new UserInfo(name, );
+  final jsonData = json.encode(userInfo.toJSON());
+
+  await file.writeAsString(jsonData);
+}
+
+Future<List<dynamic>> readJSONData(String dataToRetrieve) async {
+  final path = await _localPath;
+  final file = File('$path/data.json');
+
+  if (await file.exists()) {
+    final jsonData = await file.readAsString();
+    //print("DATA FROM FILE = " + jsonData);
+    final Map<String, dynamic> jsonMap = json.decode(jsonData);
+    //print("Map Data = " + jsonMap[dataToRetrieve].toString());
+    //print("USERNAME Map Data = " + jsonMap[dataToRetrieve][0]["username"].toString());
+    return jsonMap[dataToRetrieve];
+  } else {
+    throw FileSystemException('File does not exist.');
+  }
+  return List.empty();
+}
 
 class UserInfo{
 
@@ -15,39 +45,8 @@ class UserInfo{
 
   //Future<List<dynamic>> jsonDataGlobal = Future.value([]);
 
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  Future<void> writeJSONData(UserInfo userInfo) async {
-    final path = await _localPath;
-    final file = File("$path/data.json");
-    //UserInfo userInfo = new UserInfo(name, );
-    final jsonData = json.encode(userInfo.toJSON());
-
-    await file.writeAsString(jsonData);
-  }
-
   Map<String, dynamic> toJSON(){
     return {"UserInfo": [{"name": name, "username": username, "email": email, "password": password}]};
-  }
-
-  Future<List<dynamic>> readJSONData(String dataToRetrieve) async {
-    final path = await _localPath;
-    final file = File('$path/data.json');
-
-    if (await file.exists()) {
-      final jsonData = await file.readAsString();
-      //print("DATA FROM FILE = " + jsonData);
-      final Map<String, dynamic> jsonMap = json.decode(jsonData);
-      //print("Map Data = " + jsonMap[dataToRetrieve].toString());
-      //print("USERNAME Map Data = " + jsonMap[dataToRetrieve][0]["username"].toString());
-      return jsonMap[dataToRetrieve];
-    } else {
-      throw FileSystemException('File does not exist.');
-    }
-    return List.empty();
   }
 
   UserInfo(name, username, email, password){
@@ -57,9 +56,7 @@ class UserInfo{
     this.password = password;
   }
 
-  
-
-  bool writeDataToJSON(String name, String username, String userEmail, String password){
+  bool writeUserDataToJSON(String name, String username, String userEmail, String password){
 
     UserInfo userInfo = UserInfo(name, username, userEmail, password);
     writeJSONData(userInfo);
@@ -86,10 +83,24 @@ class UserInfo{
 }
 
 class UserParkingInfo{
-  String nome = "";
+  String name = "";
   int specialNecessityPark = -1;
   int parkNumber = -1;
   bool paidPark = false;
+
+  UserParkingInfo(name, specialNecessityPark, parkNumber, paidPark){
+    this.name = name;
+    this.specialNecessityPark = specialNecessityPark;
+    this.parkNumber = parkNumber;
+    this.paidPark = paidPark;
+  }  
+
+  void reserveParkingSpot(){
+
+    
+
+  }
+
 }
 
 class AppState{

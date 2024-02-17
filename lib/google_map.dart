@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'services/UserService.dart';
 
 void main() {
   runApp(MaterialApp(home: GoogleMapActivity()));
@@ -15,20 +16,86 @@ const String google_api_key = "AIzaSyCsgQMdy2MoeXZYKAm7VOr_ZKPlvZ2jXxA";
 const Color primaryColor = Color(0xFF7B61FF);
 const double defaultPadding = 16.0;
 ///////////////////////////////////////////////////////GOOGLE MAPS STUFF/////////////////////////////////////////////////////////////////////////////////////
-//Values Passed By Parameter from Google Maps
-String parkingName = "Estacionamento Parque das Nações";
-const List<int> parkNumbersList = [1, 5, 10];
-int selectedItem = 1;
-int parkingNumbersListSize = parkNumbersList.length;
-bool paidPark = false;
+///////////////////////////////////////////////////////SOURCE LOCATION - Handicap Normal/////////////////////////////////////////////////////////////////////
+String parkingNameSourceLocationHandicapNormal = "Busparkplatt";
+const List<int> parkNumbersListSourceLocationHandicapNormal = [1, 5, 10];
+int selectedItemSourceLocationHandicapNormal = 1;
+int parkingNumbersListSizeSourceLocationHandicapNormal = parkNumbersListSourceLocationHandicapNormal.length;
+bool paidParkSourceLocationHandicapNormal = false;
+///////////////////////////////////////////////////////SOURCE LOCATION - Handicap Full/////////////////////////////////////////////////////////////////////
+String parkingNameSourceLocationHandicapFull = "Parking Évora";
+const List<int> parkNumbersListSourceLocationHandicapFull = [2, 6, 14];
+int selectedItemSourceLocationHandicapFull = 2;
+int parkingNumbersListSizeSourceLocationHandicapFull = parkNumbersListSourceLocationHandicapFull.length;
+bool paidParkSourceLocationHandicapFull = false;
+///////////////////////////////////////////////////////SOURCE LOCATION - Handicap Empty/////////////////////////////////////////////////////////////////////
+String parkingNameSourceLocationHandicapEmpty = "Estacionamento Arena d'Évora";
+const List<int> parkNumbersListSourceLocationHandicapEmpty = [1, 7, 9];
+int selectedItemSourceLocationHandicapEmpty = 1;
+int parkingNumbersListSizeSourceLocationHandicapEmpty = parkNumbersListSourceLocationHandicapEmpty.length;
+bool paidParkSourceLocationHandicapEmpty = false;
 
+///////////////////////////////////////////////////////Lisboa - Handicap Normal/////////////////////////////////////////////////////////////////////
+String parkingNameLisboaHandicapNormal = "Estacionamento do Campo Pequeno";
+const List<int> parkNumbersListLisboaHandicapNormal = [1, 2, 3, 4, 5];
+int selectedItemLisboaHandicapNormal = 1;
+int parkingNumbersListSizeLisboaHandicapNormal = parkNumbersListLisboaHandicapNormal.length;
+bool paidParkLisboaHandicapNormal = false;
+///////////////////////////////////////////////////////Lisboa - Handicap Full/////////////////////////////////////////////////////////////////////
+String parkingNameLisboaHandicapFull = "Parque Largo do Rato";
+const List<int> parkNumbersListLisboaHandicapFull = [7, 16, 26];
+int selectedItemLisboaHandicapFull = 7;
+int parkingNumbersListSizeLisboaHandicapFull = parkNumbersListLisboaHandicapFull.length;
+bool paidParkLisboaHandicapFull = false;
+///////////////////////////////////////////////////////Lisboa - Handicap Empty/////////////////////////////////////////////////////////////////////
+String parkingNameLisboaHandicapEmpty = "Parque Largo de Jesus";
+const List<int> parkNumbersListLisboaHandicapEmpty = [1, 6, 7, 9, 11, 16];
+int selectedItemLisboaHandicapEmpty = 1;
+int parkingNumbersListSizeLisboaHandicapEmpty = parkNumbersListLisboaHandicapEmpty.length;
+bool paidParkLisboaHandicapEmpty = false;
+
+
+///////////////////////////////////////////////////////Porto - Handicap Normal/////////////////////////////////////////////////////////////////////
+String parkingNamePortoHandicapNormal = "Fox Gym";
+const List<int> parkNumbersListPortoHandicapNormal = [1, 3];
+int selectedItemPortoHandicapNormal = 1;
+int parkingNumbersListSizePortoHandicapNormal = parkNumbersListPortoHandicapNormal.length;
+bool paidParkPortoHandicapNormal = false;
+///////////////////////////////////////////////////////Porto - Handicap Full/////////////////////////////////////////////////////////////////////
+String parkingNamePortoHandicapFull = "Lidl Porto - Av Fernão de Magalhães";
+const List<int> parkNumbersListPortoHandicapFull = [1, 2, 3, 4, 5];
+int selectedItemPortoHandicapFull = 1;
+int parkingNumbersListSizePortoHandicapFull = parkNumbersListPortoHandicapFull.length;
+bool paidParkPortoHandicapFull = false;
+///////////////////////////////////////////////////////Porto - Handicap Empty/////////////////////////////////////////////////////////////////////
+String parkingNamePortoHandicapEmpty = "Escola Secundária Carolina Michaëlis";
+const List<int> parkNumbersListPortoHandicapEmpty = [1, 2, 3];
+int selectedItemPortoHandicapEmpty = 1;
+int parkingNumbersListSizePortoHandicapEmpty = parkNumbersListPortoHandicapEmpty.length;
+bool paidParkPortoHandicapEmpty = false;
+
+///////////////////////////////////////////////////////Coimbra - Handicap Normal/////////////////////////////////////////////////////////////////////
+String parkingNameCoimbraHandicapNormal = "Decathlon Coimbra";
+const List<int> parkNumbersListCoimbraHandicapNormal = [1, 15, 25];
+int selectedItemCoimbraHandicapNormal = 1;
+int parkingNumbersListSizeCoimbraHandicapNormal = parkNumbersListCoimbraHandicapNormal.length;
+bool paidParkCoimbraHandicapNormal = false;
+///////////////////////////////////////////////////////Coimbra - Handicap Full/////////////////////////////////////////////////////////////////////
+String parkingNameCoimbraHandicapFull = "Alma Shopping";
+const List<int> parkNumbersListCoimbraHandicapFull = [2, 3, 14, 20, 27, 28];
+int selectedItemCoimbraHandicapFull = 2;
+int parkingNumbersListSizeCoimbraHandicapFull = parkNumbersListCoimbraHandicapFull.length;
+bool paidParkCoimbraHandicapFull = false;
+///////////////////////////////////////////////////////Coimbra - Handicap Empty/////////////////////////////////////////////////////////////////////
+String parkingNameCoimbraHandicapEmpty = "Museu da Ciência da Universidade de Coimbra";
+const List<int> parkNumbersListCoimbraHandicapEmpty = [1, 2, 3];
+int selectedItemCoimbraHandicapEmpty = 1;
+int parkingNumbersListSizeCoimbraHandicapEmpty = parkNumbersListCoimbraHandicapEmpty.length;
+bool paidParkCoimbraHandicapEmpty = false;
 /////////////////////////////////////////////////////////////DROPDOWN STUFF/////////////////////////////////////////////////////////////////
 //ORIGIN
 const List<String> originList = ["Localização Atual", "Lisboa", "Porto", "Coimbra"];
 String originSelectedItem = "Localização Atual";
-//DESTINATION
-//const List<String> destinationList = ["Destination 1", "Destination 2", "Destination 3"];
-//String destinationSelectedItem = "Destination 1";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class GoogleMapActivity extends StatefulWidget {
   const GoogleMapActivity({Key? key}) : super(key: key);
@@ -60,8 +127,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
   static const LatLng portoDestinationHandicapFull = LatLng(41.162923193015004, -8.63780259417406);
   static const LatLng portoDestinationEmpty = LatLng(41.15808093277244, -8.641018466598842);
 ////////////////////////////////////////////COIMBRA//////////////////////////////////////////////////////////////////////////////////
-  static LatLng coimbraSourceLocation = LatLng(40.19754414214365, -8.413450623040502);
-  static LatLng initialDestinationCoimbra = LatLng(40.19749222091944, -8.413671928239161);
+  static LatLng coimbraSourceLocation = LatLng(40.19759053748225, -8.41372822660357);
+  static LatLng initialDestinationCoimbra = LatLng(40.19747171084348, -8.413669218008264);
   static LatLng coimbraDestinationHandicapNormal = LatLng(40.199049993598386, -8.408925899843966);
   static const LatLng coimbraDestinationHandicapFull = LatLng(40.19959307935994, -8.40472437116147);
   static const LatLng coimbraDestinationEmpty = LatLng(40.19618637855491, -8.40042588412476);
@@ -89,9 +156,9 @@ class GoogleMapState extends State<GoogleMapActivity> {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       google_api_key, 
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude), 
-      //FIX DESTINATION
+      
       PointLatLng(destinationPoints.latitude, destinationPoints.longitude),
-      //FIX THE ROUTE
+      
       );
       //IMPORTANT CHECKS
       print("IS NOT EMPTY = ");
@@ -150,8 +217,6 @@ class GoogleMapState extends State<GoogleMapActivity> {
   Future<void> searchPlace() async {
     print("Origin = ");
     print(originSelectedItem);
-
-    //TODO - PUT MARKER IN POSITION
 
     if(originSelectedItem == "Localização Atual"){
 
@@ -219,6 +284,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
   void reserveParkingSpot(LatLng destination){
     getPolyPoints(destination);
 
+    UserParkingInfo userParkingInfo = UserParkingInfo("", -1, -1, false);
+    userParkingInfo.reserveParkingSpot();
     //Passar a Informação para o User Service e mostrar na lista e nos detalhes do parque
   }
 
@@ -294,14 +361,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameSourceLocationHandicapNormal),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeSourceLocationHandicapNormal'),
                               ],
                             ),
 
@@ -310,14 +377,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemSourceLocationHandicapNormal,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemSourceLocationHandicapNormal = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListSourceLocationHandicapNormal.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -330,7 +397,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkSourceLocationHandicapNormal ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -373,14 +440,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameSourceLocationHandicapFull),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeSourceLocationHandicapFull'),
                               ],
                             ),
 
@@ -389,14 +456,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemSourceLocationHandicapFull,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemSourceLocationHandicapFull = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListSourceLocationHandicapFull.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -409,7 +476,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkSourceLocationHandicapFull ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -452,14 +519,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameSourceLocationHandicapEmpty),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeSourceLocationHandicapEmpty'),
                               ],
                             ),
 
@@ -468,14 +535,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemSourceLocationHandicapEmpty,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemSourceLocationHandicapEmpty = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListSourceLocationHandicapEmpty.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -488,7 +555,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkSourceLocationHandicapEmpty ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -531,14 +598,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameLisboaHandicapNormal),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeLisboaHandicapNormal'),
                               ],
                             ),
 
@@ -547,14 +614,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemLisboaHandicapNormal,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemLisboaHandicapNormal = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListLisboaHandicapNormal.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -567,7 +634,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkLisboaHandicapNormal ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -609,14 +676,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameLisboaHandicapFull),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeLisboaHandicapFull'),
                               ],
                             ),
 
@@ -625,14 +692,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemLisboaHandicapFull,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemLisboaHandicapFull = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListLisboaHandicapFull.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -645,7 +712,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkLisboaHandicapFull ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -687,14 +754,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameLisboaHandicapEmpty),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeLisboaHandicapEmpty'),
                               ],
                             ),
 
@@ -703,14 +770,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemLisboaHandicapEmpty,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemLisboaHandicapEmpty = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListLisboaHandicapEmpty.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -723,7 +790,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkLisboaHandicapEmpty ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -768,14 +835,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNamePortoHandicapNormal),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizePortoHandicapNormal'),
                               ],
                             ),
 
@@ -784,14 +851,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemPortoHandicapNormal,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemPortoHandicapNormal = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListPortoHandicapNormal.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -804,7 +871,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkPortoHandicapNormal ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -846,14 +913,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNamePortoHandicapFull),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizePortoHandicapFull'),
                               ],
                             ),
 
@@ -862,14 +929,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemPortoHandicapFull,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemPortoHandicapFull = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListPortoHandicapFull.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -882,7 +949,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkPortoHandicapFull ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -924,14 +991,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNamePortoHandicapEmpty),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizePortoHandicapEmpty'),
                               ],
                             ),
 
@@ -940,14 +1007,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemPortoHandicapEmpty,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemPortoHandicapEmpty = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListPortoHandicapEmpty.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -960,7 +1027,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkPortoHandicapEmpty ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -1004,14 +1071,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameCoimbraHandicapNormal),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeCoimbraHandicapNormal'),
                               ],
                             ),
 
@@ -1020,14 +1087,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemCoimbraHandicapNormal,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemCoimbraHandicapNormal = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListCoimbraHandicapNormal.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -1040,7 +1107,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkCoimbraHandicapNormal ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -1082,14 +1149,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameCoimbraHandicapFull),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeCoimbraHandicapFull'),
                               ],
                             ),
 
@@ -1098,14 +1165,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemCoimbraHandicapFull,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemCoimbraHandicapFull = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListCoimbraHandicapFull.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -1118,7 +1185,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkCoimbraHandicapFull ? 'Sim' : 'Não'),
                               ],
                             )
                             
@@ -1160,14 +1227,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                         width: 30.0,
                         height: 250.0,
                         child: AlertDialog(
-                        title: Text(parkingName),
+                        title: Text(parkingNameCoimbraHandicapEmpty),
                         content: Column(
                           children: [
                             //One Row for each Item inside the Pop-Up
                             Row(
                               children: [
                                 Text("Lugares de Necessidades Especiais: "),
-                                Text('$parkingNumbersListSize'),
+                                Text('$parkingNumbersListSizeCoimbraHandicapEmpty'),
                               ],
                             ),
 
@@ -1176,14 +1243,14 @@ class GoogleMapState extends State<GoogleMapActivity> {
                                 Text("Número do Lugar: "),
                                 DropdownButton<int>(
                                   //https://youtu.be/GHkwpepeLoE
-                                  value: selectedItem,
+                                  value: selectedItemCoimbraHandicapEmpty,
                                   onChanged: (int? newValue) {
                                     if (newValue != null) {
                                       // Update the selected item when the user makes a selection
-                                      selectedItem = newValue;
+                                      selectedItemCoimbraHandicapEmpty = newValue;
                                     }
                                   },
-                                  items: parkNumbersList.map((int item) {
+                                  items: parkNumbersListCoimbraHandicapEmpty.map((int item) {
                                     return DropdownMenuItem<int>(
                                       value: item,
                                       child: Text('$item'),
@@ -1196,7 +1263,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             Row(
                               children: [
                                 Text("Pago: "),
-                                Text(paidPark ? 'Sim' : 'Não'),
+                                Text(paidParkCoimbraHandicapEmpty ? 'Sim' : 'Não'),
                               ],
                             )
                             

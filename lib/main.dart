@@ -88,7 +88,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
       //Calls the Service and Navigates away
       print("Registo efetuado com sucesso");
       UserInfo userInfo = UserInfo(nameValue, userName, userEmail, password);
-      userInfo.writeDataToJSON(nameValue, userName, userEmail, password);
+      userInfo.writeUserDataToJSON(nameValue, userName, userEmail, password);
 
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     
