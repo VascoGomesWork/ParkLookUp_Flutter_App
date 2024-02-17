@@ -31,14 +31,6 @@ Future<List<dynamic>> readUserInfoJSONData(String dataToRetrieve) async {
     //CHECKS IF THE DATA TO RETRIEVE IS THE CORRECT TYPE
     if(jsonMap[dataToRetrieve].runtimeType is! Future<List<dynamic>>){
       //IF NOT CASTS IT TO THE RIGHT TYPE
-
-      /*List<dynamic> dataList = [];
-
-      jsonMap["UserInfo"].forEach((key, value) {
-        dataList.add(key,value);
-        
-      });*/
-
       return Future.value(jsonMap["UserInfo"].values.toList());
     }
 
@@ -119,7 +111,11 @@ class UserParkingInfo{
   Future<Map<String, dynamic>> userParkingInfoToJSON() async {
     //return {"UserParkingInfo": [{"name": name, "specialNecessityParkNumber": specialNecessityParkNumber, "paidPark": paidPark}]};
     List<dynamic> jsonData = await readUserInfoJSONData("UserInfo");
-    return {"UserInfo": {"name": jsonData[0]["name"].toString(), "username": jsonData[0]["username"].toString(), "email": jsonData[0]["email"].toString(), "password": jsonData[0]["password"].toString()}, "UserParkingInfo": [{"name": name, "specialNecessityParkNumber": specialNecessityParkNumber, "paidPark": paidPark}]};
+    try{
+      return {"UserInfo": {"name": jsonData[0]["name"].toString(), "username": jsonData[0]["username"].toString(), "email": jsonData[0]["email"].toString(), "password": jsonData[0]["password"].toString()}, "UserParkingInfo": [{"name": name, "specialNecessityParkNumber": specialNecessityParkNumber, "paidPark": paidPark}]};
+    } catch (e){
+      return {"UserInfo": {"name": jsonData[0].toString(), "username": jsonData[1].toString(), "email": jsonData[2].toString(), "password": jsonData[3].toString()}, "UserParkingInfo": [{"name": name, "specialNecessityParkNumber": specialNecessityParkNumber, "paidPark": paidPark}]};
+    }
   }
 
 
@@ -145,9 +141,16 @@ class UserParkingInfo{
       //Adds data to the existing data
       jsonData.add(UserParkingInfo (name, specialNecessityParkNumber, paidPark));
 
-      print("USER APRKING INFO DATA = ${jsonData[1]}");//["specialNecessityParkNumber"].toString());
+      print("USER APRKING INFO DATA = ${jsonData[4]}");//["specialNecessityParkNumber"].toString());
       //Put Data into the JSON File
-      writeUserParkingInfoJSONData(jsonData[1]);
+      try{
+        writeUserParkingInfoJSONData(jsonData[1]);
+      }
+      catch (e){
+        //userParkingInfoToJSON()
+        writeUserParkingInfoJSONData(new UserParkingInfo(jsonData[4].name, jsonData[4].specialNecessityParkNumber, jsonData[4].paidPark));
+      }
+      
 
   }
 
@@ -158,10 +161,10 @@ class UserParkingInfo{
     if (await file.exists()) {
       final jsonData = await file.readAsString();
       //print("DATA FROM FILE = " + jsonData);
-      final Map<String, dynamic> jsonMap = json.decode(jsonData);
-      print("Data to Retrieve = ${jsonMap[1]}");
+      final Map<String, dynamic> jsonParkingListMap = json.decode(jsonData);
+      print("Data to Retrieve = ${jsonParkingListMap[dataToRetrieve]}");
       //print("USERNAME Map Data = " + jsonMap[dataToRetrieve][0]["username"].toString());
-      return jsonMap[1];
+      return jsonParkingListMap[dataToRetrieve];
     } else {
       throw const FileSystemException('File does not exist.');
     }
