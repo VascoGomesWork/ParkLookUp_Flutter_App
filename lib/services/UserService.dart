@@ -14,7 +14,7 @@ Future<void> writeJSONData(UserInfo userInfo) async {
   final path = await _localPath;
   final file = File("$path/data.json");
   //UserInfo userInfo = new UserInfo(name, );
-  final jsonData = json.encode(userInfo.toJSON());
+  final jsonData = json.encode(userInfo.userInfoToJSON());
 
   await file.writeAsString(jsonData);
 }
@@ -45,7 +45,7 @@ class UserInfo{
 
   //Future<List<dynamic>> jsonDataGlobal = Future.value([]);
 
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> userInfoToJSON(){
     return {"UserInfo": [{"name": name, "username": username, "email": email, "password": password}]};
   }
 
@@ -84,20 +84,26 @@ class UserInfo{
 
 class UserParkingInfo{
   String name = "";
-  int specialNecessityPark = -1;
-  int parkNumber = -1;
+  int specialNecessityParkNumber = -1;
   bool paidPark = false;
 
-  UserParkingInfo(name, specialNecessityPark, parkNumber, paidPark){
+  UserParkingInfo(name, specialNecessityParkNumber, paidPark){
     this.name = name;
-    this.specialNecessityPark = specialNecessityPark;
-    this.parkNumber = parkNumber;
+    this.specialNecessityParkNumber = specialNecessityParkNumber;
     this.paidPark = paidPark;
   }  
 
-  void reserveParkingSpot(){
+  void reserveParkingSpot(UserParkingInfo userParkingInfo){
 
+    print("UserParkingInfo Name = " + userParkingInfo.name.toString());
+    print("UserParkingInfo Número do Parque de Estacionamento = " + userParkingInfo.specialNecessityParkNumber.toString());
+    print("UserParkingInfo Parque Pago = " + userParkingInfo.paidPark.toString());
+
+    //Put Data into the JSON File
     
+  }
+
+  void getUserParkingSpot(){
 
   }
 

@@ -111,25 +111,25 @@ class GoogleMapState extends State<GoogleMapActivity> {
   /////////////////////////////////////////SOURCE LOCATION/////////////////////////////////////////////////////////////////////////
   static LatLng sourceLocation = LatLng(38.569791168839295, -7.906492510540867);
   static LatLng initialDestinationSourceLocation = LatLng(38.57005702971896, -7.9065052341653645);
-  static LatLng destinationHandicapNormal = LatLng(38.57373688370198, -7.912808185813289);
+  static const LatLng destinationHandicapNormal = LatLng(38.57373688370198, -7.912808185813289);
   static const LatLng destinationHandicapFull = LatLng(38.57173204693666, -7.903861526859222);
   static const LatLng destinationEmpty = LatLng(38.57783548697596, -7.905856004970001);
 /////////////////////////////////////////////LISBOA////////////////////////////////////////////////////////////////////////////////
   static LatLng lisboaSourceLocation = LatLng(38.765720610090774, -9.205036667402148);
   static LatLng initialDestinationLisboa = LatLng(38.76581005929401, -9.205117224984388);
-  static LatLng lisboaDestinationHandicapNormal = LatLng(38.80202179114487, -9.17810434050634);
+  static const LatLng lisboaDestinationHandicapNormal = LatLng(38.80202179114487, -9.17810434050634);
   static const LatLng lisboaDestinationHandicapFull = LatLng(38.77579639495337, -9.215869841502556);
   static const LatLng lisboaDestinationEmpty = LatLng(38.76027069793011, -9.16162484916254);
 //////////////////////////////////////////////PORTO//////////////////////////////////////////////////////////////////////////////////
   static LatLng portoSourceLocation = LatLng(41.16286622732716, -8.63916461073044);
   static LatLng initialDestinationPorto = LatLng(41.16288825662522, -8.63918438983451);
-  static LatLng portoDestinationHandicapNormal = LatLng(41.15845123589461, -8.645180183854443);
+  static const LatLng portoDestinationHandicapNormal = LatLng(41.15845123589461, -8.645180183854443);
   static const LatLng portoDestinationHandicapFull = LatLng(41.162923193015004, -8.63780259417406);
   static const LatLng portoDestinationEmpty = LatLng(41.15808093277244, -8.641018466598842);
 ////////////////////////////////////////////COIMBRA//////////////////////////////////////////////////////////////////////////////////
   static LatLng coimbraSourceLocation = LatLng(40.19759053748225, -8.41372822660357);
   static LatLng initialDestinationCoimbra = LatLng(40.19747171084348, -8.413669218008264);
-  static LatLng coimbraDestinationHandicapNormal = LatLng(40.199049993598386, -8.408925899843966);
+  static const LatLng coimbraDestinationHandicapNormal = LatLng(40.199049993598386, -8.408925899843966);
   static const LatLng coimbraDestinationHandicapFull = LatLng(40.19959307935994, -8.40472437116147);
   static const LatLng coimbraDestinationEmpty = LatLng(40.19618637855491, -8.40042588412476);
 
@@ -166,8 +166,6 @@ class GoogleMapState extends State<GoogleMapActivity> {
       //Removes Previous Coordinates
       if(polylineCoordinates.isNotEmpty){
         polylineCoordinates.clear();
-        print("COORDINATES = ");
-        print(polylineCoordinates);
       }
 
       if(result.points.isNotEmpty){
@@ -282,11 +280,86 @@ class GoogleMapState extends State<GoogleMapActivity> {
   }
 
   void reserveParkingSpot(LatLng destination){
-    getPolyPoints(destination);
 
-    UserParkingInfo userParkingInfo = UserParkingInfo("", -1, -1, false);
-    userParkingInfo.reserveParkingSpot();
-    //Passar a Informação para o User Service e mostrar na lista e nos detalhes do parque
+    UserParkingInfo userParkingInfo = UserParkingInfo("", -1, false);
+
+    getPolyPoints(destination);
+    print("Reserve Parking Spot");
+    switch (destinationPoints){
+
+      case destinationHandicapNormal:
+        print("Source Destination Handicap Normal");
+        userParkingInfo = new UserParkingInfo(parkingNameSourceLocationHandicapNormal, selectedItemSourceLocationHandicapNormal, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case destinationHandicapFull:
+        print("Source Destination Handicap Full");
+        userParkingInfo = new UserParkingInfo(parkingNameSourceLocationHandicapFull, selectedItemSourceLocationHandicapFull, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case destinationEmpty:
+        print("Source Destination Handicap Empty");
+        userParkingInfo = new UserParkingInfo(parkingNameSourceLocationHandicapEmpty, selectedItemSourceLocationHandicapEmpty, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case lisboaDestinationHandicapNormal:
+        print("Lisboa Handicap Normal");
+        userParkingInfo = new UserParkingInfo(parkingNameLisboaHandicapNormal, selectedItemLisboaHandicapNormal, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case lisboaDestinationHandicapFull:
+        print("Lisboa Handicap Full");
+        userParkingInfo = new UserParkingInfo(parkingNameLisboaHandicapFull, selectedItemLisboaHandicapFull, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case lisboaDestinationEmpty:
+        print("Lisboa Handicap Empty");
+        userParkingInfo = new UserParkingInfo(parkingNameLisboaHandicapEmpty, selectedItemLisboaHandicapEmpty, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case portoDestinationHandicapNormal:
+        print("Porto Handicap Normal");
+        userParkingInfo = new UserParkingInfo(parkingNamePortoHandicapNormal, selectedItemPortoHandicapNormal, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case portoDestinationHandicapFull:
+        print("Porto Handicap Full");
+        userParkingInfo = new UserParkingInfo(parkingNamePortoHandicapFull, selectedItemPortoHandicapFull, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case portoDestinationEmpty :
+        print("Porto Handicap Empty");
+        userParkingInfo = new UserParkingInfo(parkingNamePortoHandicapEmpty, selectedItemPortoHandicapEmpty, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case coimbraDestinationHandicapNormal:
+        print("Coimbra Handicap Normal");
+        userParkingInfo = new UserParkingInfo(parkingNameCoimbraHandicapNormal, selectedItemCoimbraHandicapNormal, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case coimbraDestinationHandicapFull:
+        print("Coimbra Handicap Full");
+        userParkingInfo = new UserParkingInfo(parkingNameCoimbraHandicapFull, selectedItemCoimbraHandicapFull, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+      case coimbraDestinationEmpty:
+        print("Coimbra Handicap Empty");
+        userParkingInfo = new UserParkingInfo(parkingNameCoimbraHandicapEmpty, selectedItemCoimbraHandicapEmpty, false);
+        userParkingInfo.reserveParkingSpot(userParkingInfo);
+        break;
+
+    }
   }
 
   @override
