@@ -31,7 +31,15 @@ Future<List<dynamic>> readUserInfoJSONData(String dataToRetrieve) async {
     //CHECKS IF THE DATA TO RETRIEVE IS THE CORRECT TYPE
     if(jsonMap[dataToRetrieve].runtimeType is! Future<List<dynamic>>){
       //IF NOT CASTS IT TO THE RIGHT TYPE
-      return await Future.delayed(jsonMap[dataToRetrieve]);
+
+      /*List<dynamic> dataList = [];
+
+      jsonMap["UserInfo"].forEach((key, value) {
+        dataList.add(key,value);
+        
+      });*/
+
+      return Future.value(jsonMap["UserInfo"].values.toList());
     }
 
     return jsonMap[dataToRetrieve];
@@ -74,11 +82,21 @@ class UserInfo{
 
     if(jsonData != List.empty()){
 
-      if(jsonData[0]["username"].toString() == userNameParameter && jsonData[0]["password"].toString() == passwordParameter){
-        print("USERNAME Map Data = ${jsonData[0]["username"]}");
-        print("Password Map Data = ${jsonData[0]["password"]}");
-        print("It is NOt EMPTY");
-        return true;
+      try{
+        if(jsonData[0]["username"].toString() == userNameParameter && jsonData[0]["password"].toString() == passwordParameter){
+          print("USERNAME Map Data = ${jsonData[0]["username"]}");
+          print("Password Map Data = ${jsonData[0]["password"]}");
+          print("It is NOt EMPTY");
+          return true;
+        }
+      }catch (e){
+        print("USERNAME Map Data = ${jsonData[1]}");
+        print("Password Map Data = ${jsonData[3]}");
+
+        if(jsonData[1].toString() == userNameParameter && jsonData[3].toString() == passwordParameter){
+          
+          return true;
+        }
       }
     }
 
