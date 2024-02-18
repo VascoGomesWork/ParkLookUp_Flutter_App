@@ -31,7 +31,13 @@ Future<List<dynamic>> readUserInfoJSONData(String dataToRetrieve) async {
     //CHECKS IF THE DATA TO RETRIEVE IS THE CORRECT TYPE
     if(jsonMap[dataToRetrieve].runtimeType is! Future<List<dynamic>>){
       //IF NOT CASTS IT TO THE RIGHT TYPE
-      return Future.value(jsonMap["UserInfo"].values.toList());
+      try{
+        return Future.value(jsonMap["UserInfo"].values.toList());
+      } catch (e) {
+        return Future.value(jsonMap["UserInfo"]);
+      }
+
+      //return Future.value(jsonMap["UserInfo"].values.toList());
     }
 
     return jsonMap[dataToRetrieve];
@@ -104,8 +110,19 @@ class UserParkingInfo{
 
   UserParkingInfo(name, specialNecessityParkNumber, paidPark){
     this.name = name;
-    this.specialNecessityParkNumber = specialNecessityParkNumber;
-    this.paidPark = paidPark;
+
+    try{
+      this.specialNecessityParkNumber = specialNecessityParkNumber;
+    } catch (e){
+      this.specialNecessityParkNumber = int.parse(specialNecessityParkNumber);
+    }
+
+    try{
+      this.paidPark = paidPark;
+    } catch (e){
+      this.paidPark = bool.fromEnvironment(paidPark.toLowerCase());
+    }
+    
   }  
 
   Future<Map<String, dynamic>> userParkingInfoToJSON() async {
@@ -165,13 +182,15 @@ class UserParkingInfo{
       //Adds data to the existing data
       jsonData.add(UserParkingInfo (name, specialNecessityParkNumber, paidPark));
 
-      print("USER APRKING INFO DATA = ${jsonData[4]}");//["specialNecessityParkNumber"].toString());
+      
       //Put Data into the JSON File
       try{
+        print("USER APRKING INFO DATA = ${jsonData[1]}");//["specialNecessityParkNumber"].toString());
         writeUserParkingInfoJSONData(jsonData[1]);
       }
       catch (e){
         //userParkingInfoToJSON()
+        print("USER APRKING INFO DATA = ${jsonData[4]}");//["specialNecessityParkNumber"].toString());
         writeUserParkingInfoJSONData(new UserParkingInfo(jsonData[4].name, jsonData[4].specialNecessityParkNumber, jsonData[4].paidPark));
       }
       
@@ -188,7 +207,10 @@ class UserParkingInfo{
       final Map<String, dynamic> jsonParkingListMap = json.decode(jsonData);
       print("Data to Retrieve = ${jsonParkingListMap[dataToRetrieve]}");
       //print("USERNAME Map Data = " + jsonMap[dataToRetrieve][0]["username"].toString());
-      return jsonParkingListMap[dataToRetrieve];
+      if(jsonParkingListMap[dataToRetrieve] != null){
+        return jsonParkingListMap[dataToRetrieve];
+      }
+      
     } else {
       throw const FileSystemException('File does not exist.');
     }
