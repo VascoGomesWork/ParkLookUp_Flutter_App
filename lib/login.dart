@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'map.dart';
 import 'services/UserService.dart';
+import 'main.dart';
 
 void main() {
   runApp(const MaterialApp(home: Login()));
 }
-
-
-
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -17,7 +15,8 @@ class Login extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Register'),
+          backgroundColor: Color.fromARGB(255, 173, 99, 255),
+          title: const Text('Login'),
         ),
         body: const MyTextFieldWidget(),
       ),
@@ -68,21 +67,23 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
             
-            body: Center(
+            body: SingleChildScrollView( child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
 
                   Container(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-                    child: const FlutterLogo(
-                      size: 40,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    child: Image.asset(
+                      'assets/parklookup_logo.png', // Provide the path to your custom logo image
+                      width: 250, // Adjust the width as needed
+                      height: 250, // Adjust the height as needed
+                    )
                   ),
 
                   Container(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: TextField(
                       onChanged: updateUsername,
                       decoration: InputDecoration(
@@ -114,6 +115,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
+                          backgroundColor: Color.fromARGB(255, 26, 200, 202),
                         ),
                         child: const Text('Log In'),
                         onPressed: () {
@@ -121,16 +123,32 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                         },
                       )),
 
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                  ),
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        height: 60,
+                        //padding: const EdgeInsets.all(20),
+                        child: Text("Ainda não tem conta?")),
+
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      height: 40,
+                      child: 
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(50),
+                            backgroundColor: Color.fromARGB(255, 26, 200, 202),
+                          ),
+                          child: const Text('Registe-se!'),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (_){
+                              return const MyApp();
+                            }));
+                          },
+                        )
+                      ),
 
                 ],
               ),
-            ));
+            )));
   }
 }

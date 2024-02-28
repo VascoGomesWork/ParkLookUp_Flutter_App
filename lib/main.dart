@@ -6,8 +6,6 @@ void main() {
   runApp(const MaterialApp(home: MyApp()));
 }
 
-
-
 void login(BuildContext buildContext){
   Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
     return Login();
@@ -24,6 +22,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Register'),
+          backgroundColor: Color.fromARGB(255, 173, 99, 255),
         ),
         body: const MyTextFieldWidget(),
       ),
@@ -103,20 +102,19 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: AppBar(
-              title: const Text('Login Screen'),
-            ),
-            body: Center(
+            body: SingleChildScrollView(child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
 
                   Container(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-                    child: const FlutterLogo(
-                      size: 20,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Image.asset(
+                      'assets/parklookup_logo.png', // Provide the path to your custom logo image
+                      width: 120, // Adjust the width as needed
+                      height: 120, // Adjust the height as needed
+                    )
                   ),
 
                   Container(
@@ -193,6 +191,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
+                          backgroundColor: Color.fromARGB(255, 26, 200, 202),
                         ),
                         child: const Text('Efetuar Registo'),
                         onPressed: () {
@@ -201,7 +200,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                       )),
 
                       Container(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                         child: const Text("Já tem conta? Realize o Login."),
                     ),
 
@@ -211,6 +210,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
+                          backgroundColor: Color.fromARGB(255, 26, 200, 202),
                         ),
                         child: const Text('Login'),
                         onPressed: () {
@@ -221,6 +221,6 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                   
                 ],
               ),
-            ));
+            )));
   }
 }

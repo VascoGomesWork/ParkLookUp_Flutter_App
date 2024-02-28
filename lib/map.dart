@@ -66,11 +66,15 @@ class _MapState extends State<MyHomePage> {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
+             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 20, 28, 28),
               ),
-              child: Text('Drawer Header'),
+              child: Image.asset(
+                      'assets/parklookup_logo.png', // Provide the path to your custom logo image
+                      width: 280, // Adjust the width as needed
+                      height: 280, // Adjust the height as needed
+                    ),
             ),
             ListTile(
               title: const Text('Pesquisar Parques'),

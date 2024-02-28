@@ -46,6 +46,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  #flutter_launcher_icons: ^0.9.2
+
+  #flutter_icons:
+    #android: true
+    #image_path: "assets/ParkLooUp_Logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -70,6 +75,13 @@ flutter:
       - assets/handicap.png
       - assets/handicap_green.png
       - assets/handicap_red.png
+
+      - assets/park.png
+      - assets/park_green.png
+      - assets/park_red.png
+
+      - assets/parklookup_logo_2.png
+      - assets/parklookup_logo.png
       #- lib/services/data.json
       
   #   - images/a_dot_burr.jpeg
