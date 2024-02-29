@@ -12,6 +12,7 @@ class ReservationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
   }
@@ -50,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void getParkDetails(BuildContext buildContext, Map<String, dynamic> userParkingInfo){
 
-    print("TESTE FODASSE = " + userParkingInfo["name"]);
+    print("TESTE = " + userParkingInfo["name"]);
 
     Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
       return new ParkDetails(new UserParkingInfo(userParkingInfo["name"], userParkingInfo["specialNecessityParkNumber"], userParkingInfo["paidPark"]));

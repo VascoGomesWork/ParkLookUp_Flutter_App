@@ -1410,6 +1410,9 @@ class GoogleMapState extends State<GoogleMapActivity> {
                      ElevatedButton(
                       onPressed: () => searchPlace(),
                       child: const Text('Pesquisar'),
+                      style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 26, 200, 202),
+                          ),
               )
             ))
 

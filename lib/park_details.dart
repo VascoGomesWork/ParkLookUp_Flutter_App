@@ -24,7 +24,8 @@ class ParkDetails extends StatelessWidget {
 
     return MaterialApp(  
         
-        home: MyTextPage(userParkingInfo)  
+        home: MyTextPage(userParkingInfo),
+        debugShowCheckedModeBanner: false,
     );  
   }  
 }  
@@ -36,38 +37,38 @@ class MyTextPage extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {  
-    return Scaffold(  
-      body:
-        Center(  
-          child: Column(
+    return MaterialApp(
+      home: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
             children: <Widget>[
-              Container(
-                child: Text("ParkDetails Name : " + this.userParkingInfo.name.toString())
-              ),
+              Text("ParkDetails Name: " + userParkingInfo.name),
+              SizedBox(height: 20),
 
-              Container(
-                child: Text("ParkDetails Special Necessity Park Number : " + this.userParkingInfo.specialNecessityParkNumber.toString())
-              ),
+              Text(
+                "ParkDetails Special Necessity Park Number: " + userParkingInfo.specialNecessityParkNumber.toString()),
+              SizedBox(height: 20),
 
-              Container(
-                child: Text("ParkDetails Paid Park : " + this.userParkingInfo.paidPark.toString())
-              ),
-              
+              Text("ParkDetails Paid Park: " + userParkingInfo.paidPark.toString()),
+              SizedBox(height: 20),
+
               ElevatedButton(
-                  onPressed: () {
-                    //Navigator.pop(context);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>  ReservationList())
-                    );
-
-                  },
-                  child: const Text('Go back!'),
-              )
-            ]
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 26, 200, 202),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ReservationList()),
+                  );
+                },
+                child: const Text('Go back!'),
+              ),
+            ],
+          ),
+        ),
       ),
-        ), 
     );  
   }  
 }  

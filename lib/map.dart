@@ -14,6 +14,7 @@ class Map extends StatelessWidget {
     return const MaterialApp(
       title: appTitle,
       home: MyHomePage(title: appTitle),
+      
     );
   }
 }
@@ -54,7 +55,7 @@ class _MapState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(title: Text(widget.title), backgroundColor: Color.fromARGB(255, 173, 99, 255),),
       body: Center(
         child: _widgetOptions[_selectedIndex],
       ),
@@ -72,8 +73,8 @@ class _MapState extends State<MyHomePage> {
               ),
               child: Image.asset(
                       'assets/parklookup_logo.png', // Provide the path to your custom logo image
-                      width: 280, // Adjust the width as needed
-                      height: 280, // Adjust the height as needed
+                      width: 300, // Adjust the width as needed
+                      height: 300, // Adjust the height as needed
                     ),
             ),
             ListTile(
