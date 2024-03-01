@@ -27,7 +27,6 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> items = [];
   List<dynamic> userParkingListJsonData = [];
 
-
   @override
   void initState() {
     super.initState();

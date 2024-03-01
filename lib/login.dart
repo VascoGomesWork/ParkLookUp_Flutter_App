@@ -54,7 +54,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   
   if(await userInfo.checkLoginCredentials(userName, password)){
     Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
-      return const Map();
+      return Map(userName);
     }));
   } else {
     //INCORRECT LOGGIN DATA -> SHOW WARNING

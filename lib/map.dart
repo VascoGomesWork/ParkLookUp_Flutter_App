@@ -2,15 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:parking_space_project/google_map.dart';
 import 'package:parking_space_project/reservation_list.dart';
 
-void main() => runApp(const MaterialApp(home: Map()));
+String username = "LOGIN";
+
+void main() {
+  username = "MAP";
+  runApp(MaterialApp(home: Map(username)));
+  print("USERNAME START= " + username);
+}
 
 class Map extends StatelessWidget {
-  const Map({super.key});
-
+  const Map(String username);
+  
   static const appTitle = 'Drawer Demo';
 
   @override
   Widget build(BuildContext context) {
+    print("USERNAME BUILD= " + username);
     return const MaterialApp(
       title: appTitle,
       home: MyHomePage(title: appTitle),
@@ -36,10 +43,10 @@ class _MapState extends State<MyHomePage> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
       
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
 
     //Activity for Google Maps
-    GoogleMapActivity(),
+    GoogleMapActivity(username),
 
     //Activity for Reservation List
     ReservationList(),

@@ -2,10 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:parking_space_project/map.dart';
 import 'services/UserService.dart';
 
+
+
 void main() {
-  runApp(const MaterialApp(home: GoogleMapActivity()));
+  runApp(MaterialApp(home: GoogleMapActivity(username)));
 }
 
 //https://youtu.be/B9hsWOCXb_o
@@ -95,11 +98,14 @@ bool paidParkCoimbraHandicapEmpty = false;
 const List<String> originList = ["Localização Atual", "Lisboa", "Porto", "Coimbra"];
 String originSelectedItem = "Localização Atual";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class GoogleMapActivity extends StatefulWidget {
-  const GoogleMapActivity({Key? key}) : super(key: key);
+//////////////////////////////////////////////////////////USER INFO////////////////////////////////////////////////////////////////
+//UserInfo userInfo = new UserInfo("", "", "", "");
 
+class GoogleMapActivity extends StatefulWidget {
+  const GoogleMapActivity(String username);
+  
   @override
-  State<GoogleMapActivity> createState() => GoogleMapState();
+  State<GoogleMapActivity> createState() => GoogleMapState(username);
 }
 
 class GoogleMapState extends State<GoogleMapActivity> {
@@ -145,6 +151,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
 
   //CAMERA POSITION
   CameraPosition cameraPosition = CameraPosition(target: sourceLocation,zoom: 14.5);
+  
+  GoogleMapState(String username);
 
   void getPolyPoints(LatLng destination) async {
     PolylinePoints polylinePoints = PolylinePoints();
@@ -178,6 +186,11 @@ class GoogleMapState extends State<GoogleMapActivity> {
   }
 
   Future<void> setCustomMarkerIcon() async {
+    //UserInfo userInfo = new UserInfo("", "", "", "");
+    //List<dynamic> jsonData = await readUserInfoJSONData("UserInfo");
+    print("TESTE USER INFO!!!!!!!!!!!!! = " + username);
+
+    print("<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
     var markerIcon = await BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(),
@@ -190,19 +203,19 @@ class GoogleMapState extends State<GoogleMapActivity> {
       },
     );
 
-    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap.png")
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, username == "LOGIN" ? "assets/handicap.png" : "assets/park.png")
     .then((icon) => {
         destinationHandicapNormalIcon = icon
       },
     );
 
-    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap_red.png")
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, username == "LOGIN" ? "assets/handicap_red.png" : "assets/park_red.png")
     .then((icon) => {
         destinationHandicapFullIcon = icon
       },
     );
 
-    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap_green.png")
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, username == "LOGIN" ? "assets/handicap_green.png" : "assets/park_green.png")
     .then((icon) => {
         destinationHandicapEmptyIcon = icon
       },
