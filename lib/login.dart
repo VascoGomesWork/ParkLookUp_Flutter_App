@@ -36,6 +36,8 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   String userName = "";
   String password = "";
 
+  bool loginForm = false;
+
   void updateUsername(String value){
     setState((){
       userName = value;
@@ -53,6 +55,13 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   UserInfo userInfo = UserInfo("", "", "", "");
   
   if(await userInfo.checkLoginCredentials(userName, password)){
+
+    
+    setState((){
+      loginForm = true;
+    });
+
+
     Navigator.of(buildContext).push(MaterialPageRoute(builder: (_){
       return Map(userName);
     }));
@@ -119,7 +128,38 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                         ),
                         child: const Text('Log In'),
                         onPressed: () {
+
                           login(context);
+
+                          Future.delayed(Duration(seconds: 1), () {
+                          loginForm == false ? showDialog(
+                            
+                            context: context,
+                            builder: (context) => 
+                            SizedBox(
+                              
+                              child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: AlertDialog(
+                                backgroundColor: Colors.red,
+                              title: const Text("Login Falhou\n\nPor favor preencha todos os \ncampos corretamente"),
+                              
+                              actions: [
+                                TextButton(
+                                  child: const Text(
+                                    "Ok", 
+                                    style: TextStyle(
+                                    color: Colors.black, // Change the text color
+                                    fontSize: 24.0,
+                                  ),), 
+                                  onPressed: () => {
+                                    Navigator.pop(context)
+                                  }
+                                ),
+                              ],
+                              )
+                            ))): "";});
+
                         },
                       )),
 

@@ -12,6 +12,7 @@ void login(BuildContext buildContext){
   }));
 }
 
+bool registerSuccessfull = false;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,7 +47,8 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
   String password = "";
   String repeatPassword = "";
 
-  
+  double containerPositionY = 200.0;
+  bool registerForm = false;
 
   void updateName(String value){
     setState((){
@@ -86,15 +88,13 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
     print("Final Password Value = $password");
     print("Final Repeat Password Value = $repeatPassword");
 
+    registerForm = nameValue.isNotEmpty && userName.isNotEmpty && userEmail.isNotEmpty && password.isNotEmpty && repeatPassword.isNotEmpty && password == repeatPassword;
 
-    if(nameValue.isNotEmpty && userName.isNotEmpty && userEmail.isNotEmpty && password.isNotEmpty && repeatPassword.isNotEmpty && password == repeatPassword){
+    if(registerForm){
       //Calls the Service and Navigates away
       print("Registo efetuado com sucesso");
       UserInfo userInfo = UserInfo(nameValue, userName, userEmail, password);
       userInfo.writeUserDataToJSON(nameValue, userName, userEmail, password);
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-    
     }
   }
 
@@ -196,6 +196,39 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                         child: const Text('Efetuar Registo'),
                         onPressed: () {
                           register();
+
+                          showDialog(
+                            
+                            context: context,
+                            builder: (context) => 
+                            SizedBox(
+                              
+                              child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: AlertDialog(
+                                backgroundColor: registerForm == true ? Colors.green : Colors.red,
+                              title: Text(registerForm == true ? "Registo realizado com Sucesso" : "Registo Falhou\n\nPor favor preencha todos os \ncampos corretamente"),
+                              
+                              actions: [
+                                TextButton(
+                                  child: const Text(
+                                    "Ok", 
+                                    style: TextStyle(
+                                    color: Colors.black, // Change the text color
+                                    fontSize: 24.0,
+                                  ),), 
+                                  onPressed: () => {
+                                    if(registerForm == true){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()))
+                                    } else {
+                                      Navigator.pop(context)
+                                    },
+                                  }
+                                ),
+                              ],
+                              )
+                            )));
+
                         },
                       )),
 
@@ -218,7 +251,22 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
                         },
                       )),
 
-                  
+                  /*Container(
+                    margin: EdgeInsets.only(top: containerPositionY),
+                    color: registerSuccessfull == true ? Colors.green : Colors.transparent,
+                    child: AlertDialog(
+                          title: Text("Registo foi realizado com Sucesso"),
+                          actions: [
+                            TextButton(
+                              child: Text("Ok"), 
+                              onPressed: () => {
+                                //Navegar para o Login
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Login()))
+                                },
+                            ),
+                          ],
+                      )
+                  ),*/
                 ],
               ),
             )));

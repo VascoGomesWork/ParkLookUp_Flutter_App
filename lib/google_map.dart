@@ -37,7 +37,7 @@ int parkingNumbersListSizeSourceLocationHandicapEmpty = parkNumbersListSourceLoc
 bool paidParkSourceLocationHandicapEmpty = false;
 
 ///////////////////////////////////////////////////////Lisboa - Handicap Normal/////////////////////////////////////////////////////////////////////
-String parkingNameLisboaHandicapNormal = "Estacionamento do Campo Pequeno";
+String parkingNameLisboaHandicapNormal = "Estacionamento Campo Pequeno";
 const List<int> parkNumbersListLisboaHandicapNormal = [1, 2, 3, 4, 5];
 int selectedItemLisboaHandicapNormal = 1;
 int parkingNumbersListSizeLisboaHandicapNormal = parkNumbersListLisboaHandicapNormal.length;
@@ -63,13 +63,13 @@ int selectedItemPortoHandicapNormal = 1;
 int parkingNumbersListSizePortoHandicapNormal = parkNumbersListPortoHandicapNormal.length;
 bool paidParkPortoHandicapNormal = false;
 ///////////////////////////////////////////////////////Porto - Handicap Full/////////////////////////////////////////////////////////////////////
-String parkingNamePortoHandicapFull = "Lidl Porto - Av Fernão de Magalhães";
+String parkingNamePortoHandicapFull = "Lidl Porto - Av Fernão M";
 const List<int> parkNumbersListPortoHandicapFull = [1, 2, 3, 4, 5];
 int selectedItemPortoHandicapFull = 1;
 int parkingNumbersListSizePortoHandicapFull = parkNumbersListPortoHandicapFull.length;
 bool paidParkPortoHandicapFull = false;
 ///////////////////////////////////////////////////////Porto - Handicap Empty/////////////////////////////////////////////////////////////////////
-String parkingNamePortoHandicapEmpty = "Escola Secundária Carolina Michaëlis";
+String parkingNamePortoHandicapEmpty = "Escola Secundária Carolina M";
 const List<int> parkNumbersListPortoHandicapEmpty = [1, 2, 3];
 int selectedItemPortoHandicapEmpty = 1;
 int parkingNumbersListSizePortoHandicapEmpty = parkNumbersListPortoHandicapEmpty.length;
@@ -88,7 +88,7 @@ int selectedItemCoimbraHandicapFull = 2;
 int parkingNumbersListSizeCoimbraHandicapFull = parkNumbersListCoimbraHandicapFull.length;
 bool paidParkCoimbraHandicapFull = false;
 ///////////////////////////////////////////////////////Coimbra - Handicap Empty/////////////////////////////////////////////////////////////////////
-String parkingNameCoimbraHandicapEmpty = "Museu da Ciência da Universidade de Coimbra";
+String parkingNameCoimbraHandicapEmpty = "Museu da Ciência de Coimbra";
 const List<int> parkNumbersListCoimbraHandicapEmpty = [1, 2, 3];
 int selectedItemCoimbraHandicapEmpty = 1;
 int parkingNumbersListSizeCoimbraHandicapEmpty = parkNumbersListCoimbraHandicapEmpty.length;
@@ -100,6 +100,7 @@ String originSelectedItem = "Localização Atual";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////USER INFO////////////////////////////////////////////////////////////////
 //UserInfo userInfo = new UserInfo("", "", "", "");
+String usernameGlobal = "";
 
 class GoogleMapActivity extends StatefulWidget {
   const GoogleMapActivity(String username);
@@ -138,6 +139,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
   static const LatLng coimbraDestinationEmpty = LatLng(40.19618637855491, -8.40042588412476);
 
   LatLng destinationPoints = initialDestinationSourceLocation;
+  bool globalReservation = false;
 
   List<LatLng> polylineCoordinates = [];
   
@@ -195,6 +197,15 @@ class GoogleMapState extends State<GoogleMapActivity> {
     var markerIcon = await BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(),
       'assets/handicap_green.png'
+    );
+
+    usernameGlobal = username;
+
+    //CURRENT USER LOCATION
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/car.png")
+    .then((icon) => {
+        currentLocationIcon = icon
+      },
     );
 
     BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, "assets/handicap.png")
@@ -302,6 +313,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
         print("Source Destination Handicap Normal");
         userParkingInfo = UserParkingInfo(parkingNameSourceLocationHandicapNormal, selectedItemSourceLocationHandicapNormal, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         //userParkingInfo.getUserListParkingSpot();
         break;
 
@@ -309,6 +321,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
         print("Source Destination Handicap Full");
         userParkingInfo = UserParkingInfo(parkingNameSourceLocationHandicapFull, selectedItemSourceLocationHandicapFull, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         //userParkingInfo.getUserListParkingSpot();
         break;
 
@@ -316,6 +329,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
         print("Source Destination Handicap Empty");
         userParkingInfo = UserParkingInfo(parkingNameSourceLocationHandicapEmpty, selectedItemSourceLocationHandicapEmpty, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         //userParkingInfo.getUserListParkingSpot();
         break;
 
@@ -323,54 +337,63 @@ class GoogleMapState extends State<GoogleMapActivity> {
         print("Lisboa Handicap Normal");
         userParkingInfo = UserParkingInfo(parkingNameLisboaHandicapNormal, selectedItemLisboaHandicapNormal, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
       case lisboaDestinationHandicapFull:
         print("Lisboa Handicap Full");
         userParkingInfo = UserParkingInfo(parkingNameLisboaHandicapFull, selectedItemLisboaHandicapFull, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
       case lisboaDestinationEmpty:
         print("Lisboa Handicap Empty");
         userParkingInfo = UserParkingInfo(parkingNameLisboaHandicapEmpty, selectedItemLisboaHandicapEmpty, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
       case portoDestinationHandicapNormal:
         print("Porto Handicap Normal");
         userParkingInfo = UserParkingInfo(parkingNamePortoHandicapNormal, selectedItemPortoHandicapNormal, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
       case portoDestinationHandicapFull:
         print("Porto Handicap Full");
         userParkingInfo = UserParkingInfo(parkingNamePortoHandicapFull, selectedItemPortoHandicapFull, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
       case portoDestinationEmpty :
         print("Porto Handicap Empty");
         userParkingInfo = UserParkingInfo(parkingNamePortoHandicapEmpty, selectedItemPortoHandicapEmpty, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
       case coimbraDestinationHandicapNormal:
         print("Coimbra Handicap Normal");
         userParkingInfo = UserParkingInfo(parkingNameCoimbraHandicapNormal, selectedItemCoimbraHandicapNormal, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
       case coimbraDestinationHandicapFull:
         print("Coimbra Handicap Full");
         userParkingInfo = UserParkingInfo(parkingNameCoimbraHandicapFull, selectedItemCoimbraHandicapFull, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
       case coimbraDestinationEmpty:
         print("Coimbra Handicap Empty");
         userParkingInfo = UserParkingInfo(parkingNameCoimbraHandicapEmpty, selectedItemCoimbraHandicapEmpty, false);
         userParkingInfo.reserveParkingSpot(userParkingInfo);
+        globalReservation = true;
         break;
 
     }
@@ -441,13 +464,16 @@ class GoogleMapState extends State<GoogleMapActivity> {
                   position: destinationHandicapNormal,
                   onTap: () {
                     //https://www.youtube.com/watch?v=4pn-_md5Ol4
+                    
                     showDialog(
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
-                        child: AlertDialog(
+                        
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child:
+                        AlertDialog(
                         title: Text(parkingNameSourceLocationHandicapNormal),
                         content: Column(
                           children: [
@@ -490,24 +516,53 @@ class GoogleMapState extends State<GoogleMapActivity> {
                             
                           ]
                           ),
-                        actions: [
-                          TextButton(
-                            child: const Text("Reservar Lugar"), 
-                            onPressed: () => {
-                              reserveParkingSpot(destinationHandicapNormal),
-                              Navigator.pop(context)
-                              },
-                          ),
+                          actions: [
+                            TextButton(
+                              child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
+                              onPressed: () => {
+                                reserveParkingSpot(destinationHandicapNormal),
+                                Navigator.pop(context),
 
-                          TextButton(
-                            child: const Text("Cancelar"), 
-                            onPressed: () => {
-                              Navigator.pop(context)
-                            },
-                          )
-                        ],
+                                //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
+                                },
+                            ),
+
+                            TextButton(
+                              child: const Text("Cancelar"), 
+                              onPressed: () => {
+                                Navigator.pop(context)
+                              },
+                            )
+                          ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -524,8 +579,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNameSourceLocationHandicapFull),
                         content: Column(
@@ -571,10 +626,39 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(destinationHandicapFull),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -586,7 +670,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -603,8 +687,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNameSourceLocationHandicapEmpty),
                         content: Column(
@@ -650,10 +734,40 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(destinationEmpty),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
+
                               },
                           ),
 
@@ -665,7 +779,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -682,8 +796,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNameLisboaHandicapNormal),
                         content: Column(
@@ -729,10 +843,39 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(lisboaDestinationHandicapNormal),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -744,7 +887,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -760,8 +903,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNameLisboaHandicapFull),
                         content: Column(
@@ -807,10 +950,39 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(lisboaDestinationHandicapFull ),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -822,7 +994,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -838,8 +1010,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNameLisboaHandicapEmpty),
                         content: Column(
@@ -885,10 +1057,39 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(lisboaDestinationEmpty ),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -900,7 +1101,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -919,8 +1120,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNamePortoHandicapNormal),
                         content: Column(
@@ -966,10 +1167,39 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(portoDestinationHandicapNormal ),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -981,7 +1211,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -997,8 +1227,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNamePortoHandicapFull),
                         content: Column(
@@ -1044,10 +1274,39 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(portoDestinationHandicapFull ),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -1059,7 +1318,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -1075,8 +1334,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNamePortoHandicapEmpty),
                         content: Column(
@@ -1122,10 +1381,39 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(portoDestinationEmpty ),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -1137,7 +1425,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -1155,8 +1443,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNameCoimbraHandicapNormal),
                         content: Column(
@@ -1202,10 +1490,40 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(coimbraDestinationHandicapNormal),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+                              
                               },
                           ),
 
@@ -1217,7 +1535,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -1233,8 +1551,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNameCoimbraHandicapFull),
                         content: Column(
@@ -1280,10 +1598,39 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(coimbraDestinationHandicapFull),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -1295,7 +1642,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 ),
@@ -1311,8 +1658,8 @@ class GoogleMapState extends State<GoogleMapActivity> {
                       context: context,
                       builder: (context) => 
                       SizedBox(
-                        width: 30.0,
-                        height: 250.0,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: AlertDialog(
                         title: Text(parkingNameCoimbraHandicapEmpty),
                         content: Column(
@@ -1358,10 +1705,40 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           ),
                         actions: [
                           TextButton(
-                            child: const Text("Reservar Lugar"), 
+                            child: Text(usernameGlobal == "LOGIN" ? "Reservar Lugar" : "Marcar GPS"), 
                             onPressed: () => {
                               reserveParkingSpot(coimbraDestinationEmpty),
-                              Navigator.pop(context)
+                              Navigator.pop(context),
+
+
+                              //If the reservation has been successfull then shows a green message else shows a red message
+                              showDialog(
+                                context: context,
+                                builder: (context) => 
+                                SizedBox(
+                                  
+                                  child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: AlertDialog(
+                                    backgroundColor: globalReservation == true ? Colors.green : Colors.red,
+                                  title: Text(globalReservation == true ? "Reserva efetuada com sucesso!" : "Reserva falhou"),
+                                  
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        "Ok", 
+                                        style: TextStyle(
+                                        color: Colors.black, // Change the text color
+                                        fontSize: 24.0,
+                                      ),), 
+                                      onPressed: () => {
+                                        Navigator.pop(context)
+                                      }
+                                    ),
+                                  ],
+                                  )
+                                ))),
+
                               },
                           ),
 
@@ -1373,7 +1750,7 @@ class GoogleMapState extends State<GoogleMapActivity> {
                           )
                         ],
                         )
-                      )
+                      ))
                     );
                   },
                 )

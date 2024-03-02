@@ -13,10 +13,11 @@ void main() {
 class Map extends StatelessWidget {
   const Map(String username);
   
-  static const appTitle = 'Drawer Demo';
+  static const appTitle = 'ParkLookUp';
 
   @override
   Widget build(BuildContext context) {
+    username = username;
     print("USERNAME BUILD= " + username);
     return const MaterialApp(
       title: appTitle,
@@ -94,7 +95,7 @@ class _MapState extends State<MyHomePage> {
                 Navigator.pop(context);
               },
             ),
-            ListTile(
+            username == "LOGIN" ? ListTile(
               title: const Text('Reserva de Lugares'),
               selected: _selectedIndex == 1,
               onTap: () {
@@ -106,7 +107,7 @@ class _MapState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(builder: (buildContext) => const ReservationList()));*/
               },
-            )
+            ) : Text("")
           ],
         ),
       ),
